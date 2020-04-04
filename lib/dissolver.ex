@@ -151,7 +151,7 @@ defmodule Dissolver do
     end
   end
 
-  defp default_max_page() do
+  defp default_max_page do
     Application.get_env(:dissolver, :max_page, @max_page)
   end
 

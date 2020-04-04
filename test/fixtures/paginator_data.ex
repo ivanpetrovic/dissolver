@@ -1,5 +1,7 @@
 defmodule PaginatorData do
-  def page_list() do
+  @moduledoc false
+
+  def page_list do
     [
       {"First", 1, "/products?category=25&page=1", false},
       {"<", 6, "/products?category=25&page=6", false},

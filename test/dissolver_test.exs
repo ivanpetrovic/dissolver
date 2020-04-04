@@ -1,7 +1,9 @@
 defmodule DissolverTest do
   use ExUnit.Case
-  alias Dissolver.Repo
+
   alias Dissolver.Product
+  alias Dissolver.Repo
+
   import Ecto.Query
 
   setup do

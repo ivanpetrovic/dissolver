@@ -3,7 +3,7 @@ defmodule Dissolver.HTML do
   alias Dissolver.HTML
   import Dissolver.Paginator, only: [build_options: 1]
 
-  @themes [:bootstrap, :bootstrap4, :foundation, :semantic]
+  @themes [:bootstrap, :foundation, :semantic, :simple]
 
   @moduledoc """
   Html helpers to render the pagination links and more,

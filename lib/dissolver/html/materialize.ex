@@ -1,4 +1,9 @@
 defmodule Dissolver.HTML.Materialize do
+  @moduledoc """
+  This is a theme to support Materialize
+  https://materializecss.com/
+  """
+
   use Phoenix.HTML
 
   def generate_links(page_list, additional_class) do

@@ -1,4 +1,8 @@
 defmodule Dissolver.HTML.Simple do
+  @moduledoc """
+  This is a simple nav theme
+  """
+
   use Phoenix.HTML
 
   def generate_links(page_list, additional_class) do

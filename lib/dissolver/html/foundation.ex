@@ -1,4 +1,9 @@
 defmodule Dissolver.HTML.Foundation do
+  @moduledoc """
+  This is a theme to support Foundation
+  https://get.foundation/
+  """
+
   use Phoenix.HTML
 
   def generate_links(page_list, additional_class) do

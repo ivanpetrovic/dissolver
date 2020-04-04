@@ -1,4 +1,9 @@
 defmodule Dissolver.HTML.Semantic do
+  @moduledoc """
+  This is a theme to support Semantic UI.
+  https://semantic-ui.com/
+  """
+
   use Phoenix.HTML
 
   def generate_links(page_list, additional_class) do

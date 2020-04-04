@@ -18,7 +18,8 @@ defmodule Dissolver.Mixfile do
       source_url: "https://github.com/joshchernoff/dissolver",
       description: """
       Pagination for Ecto and Phoenix.
-      """
+      """,
+      preferred_cli_env: [credo: :test]
     ]
   end
 
@@ -49,6 +50,7 @@ defmodule Dissolver.Mixfile do
       {:ecto_sql, "~> 3.0"},
       # Test dependencies
       {:postgrex, "~> 0.14.0", only: [:test]},
+      {:credo, "1.3.2", only: [:test]},
       # Docs dependencies
       {:earmark, "~> 0.1", only: :docs},
       {:ex_doc, "~> 0.11", only: :docs},
