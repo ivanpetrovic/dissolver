@@ -1,9 +1,6 @@
 defmodule Dissolver.HTML do
   use Phoenix.HTML
-  alias Dissolver.HTML
   import Dissolver.Paginator, only: [build_options: 1]
-
-  @themes [:bootstrap, :foundation, :semantic, :simple]
 
   @moduledoc """
   Html helpers to render the pagination links and more,
@@ -30,7 +27,7 @@ defmodule Dissolver.HTML do
   `:bootstrap`, but you can add your own using the `Dissolver.HTML.do_paginate/3` function
   if desired. Dissolver provides few themes out of the box:
 
-      #{inspect(@themes)}
+      [:bootstrap, :foundation, :semantic, :simple, :tailwind]
 
   Example:
 
@@ -61,13 +58,6 @@ defmodule Dissolver.HTML do
   end
 
   defp render_page_list(page_list, opts) do
-    case opts[:theme] do
-      :bootstrap -> HTML.Bootstrap.generate_links(page_list, opts[:class])
-      :bootstrap4 -> HTML.Bootstrap4.generate_links(page_list, opts[:class])
-      :foundation -> HTML.Foundation.generate_links(page_list, opts[:class])
-      :semantic -> HTML.Semantic.generate_links(page_list, opts[:class])
-      :materialize -> HTML.Materialize.generate_links(page_list, opts[:class])
-      _ -> HTML.Simple.generate_links(page_list, opts[:class])
-    end
+    opts[:theme].generate_links(page_list, opts[:class])
   end
 end

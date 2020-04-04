@@ -1,11 +1,13 @@
 defmodule Dissolver.HTML.Foundation do
+  @behaviour Dissolver.HTML.Theme
+  use Phoenix.HTML
+
   @moduledoc """
   This is a theme to support Foundation
   https://get.foundation/
   """
 
-  use Phoenix.HTML
-
+  @impl Dissolver.HTML.Theme
   def generate_links(page_list, additional_class) do
     content_tag :ul, class: build_html_class(additional_class), role: "pagination" do
       for {label, _page, url, current} <- page_list do

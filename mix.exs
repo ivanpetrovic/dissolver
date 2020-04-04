@@ -19,7 +19,8 @@ defmodule Dissolver.Mixfile do
       description: """
       Pagination for Ecto and Phoenix.
       """,
-      preferred_cli_env: [credo: :test]
+      preferred_cli_env: [credo: :test, "coveralls.html": :test],
+      test_coverage: [tool: ExCoveralls]
     ]
   end
 
@@ -44,17 +45,18 @@ defmodule Dissolver.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:phoenix_html, "~> 2.10"},
-      {:plug, "~> 1.4"},
-      {:ecto, "~> 3.0"},
-      {:ecto_sql, "~> 3.0"},
+      {:phoenix_html, "~> 2.14"},
+      {:plug, "~> 1.10"},
+      {:ecto, "~> 3.4"},
+      {:ecto_sql, "~> 3.4"},
       # Test dependencies
-      {:postgrex, "~> 0.14.0", only: [:test]},
+      {:postgrex, "~> 0.15", only: [:test]},
       {:credo, "1.3.2", only: [:test]},
+      {:excoveralls, "~> 0.12", only: [:test]},
       # Docs dependencies
-      {:earmark, "~> 0.1", only: :docs},
-      {:ex_doc, "~> 0.11", only: :docs},
-      {:inch_ex, "~> 0.2", only: :docs}
+      {:earmark, "~> 1.4", only: :docs},
+      {:ex_doc, "~> 0.21", only: :docs},
+      {:inch_ex, "~> 2.0", only: :docs}
     ]
   end
 
@@ -76,6 +78,10 @@ defmodule Dissolver.Mixfile do
   end
 
   def aliases do
-    [test: ["ecto.create --quite", "ecto.migrate --quite", "test"]]
+    [
+      "ecto.setup": ["ecto.create --quiet", "ecto.migrate"],
+      "ecto.reset": ["ecto.drop", "ecto.setup"],
+      test: ["ecto.setup", "test"]
+    ]
   end
 end

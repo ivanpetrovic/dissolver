@@ -16,7 +16,13 @@ defmodule Dissolver.Paginator do
   Helpers to render the pagination links and more.
   """
 
-  @doc false
+  @doc """
+  """
+  @spec paginate(
+          any,
+          atom | %{page: any, params: map, total_pages: any},
+          nil | maybe_improper_list | map
+        ) :: [any]
   def paginate(conn, paginator, opts \\ []) do
     page = paginator.page
     total_pages = paginator.total_pages
@@ -33,7 +39,28 @@ defmodule Dissolver.Paginator do
     end)
   end
 
-  def label_text(label, opts) do
+  @doc """
+
+  """
+  @spec build_options(keyword) :: keyword
+  def build_options(opts) do
+    @default
+    |> Keyword.merge(opts)
+    |> Keyword.merge(params: Keyword.get(opts, :params, %{}))
+    |> Keyword.merge(theme: Keyword.get(opts, :theme, Application.get_env(:dissolver, :theme)))
+  end
+
+  defp page_list(list, page, total, window, true) when is_integer(window) and window >= 1 do
+    page_list =
+      left(page, total, window)..right(page, total, window)
+      |> Enum.map(fn n -> {n, n} end)
+
+    list ++ page_list
+  end
+
+  defp page_list(list, _page, _total, _window, _range), do: list
+
+  defp label_text(label, opts) do
     case label do
       :first -> opts[:first_label]
       :previous -> opts[:previous_label]
@@ -43,83 +70,59 @@ defmodule Dissolver.Paginator do
     end
   end
 
-  @doc """
-  Generates a page list based on current window
-  """
-  def page_list(list, page, total, window, true) when is_integer(window) and window >= 1 do
-    page_list =
-      left(page, total, window)..right(page, total, window)
-      |> Enum.map(fn n -> {n, n} end)
-
-    list ++ page_list
-  end
-
-  def page_list(list, _page, _total, _window, _range), do: list
-
-  def left(page, _total, window) when page - window <= 1 do
+  defp left(page, _total, window) when page - window <= 1 do
     1
   end
 
-  def left(page, _total, window), do: page - window
+  defp left(page, _total, window), do: page - window
 
-  def right(page, total, window) when page + window >= total do
+  defp right(page, total, window) when page + window >= total do
     total
   end
 
-  def right(page, _total, window), do: page + window
+  defp right(page, _total, window), do: page + window
 
-  def previous_page(page) when page > 1 do
+  defp previous_page(page) when page > 1 do
     [{:previous, page - 1}]
   end
 
-  def previous_page(_page), do: []
+  defp previous_page(_page), do: []
 
-  def next_page(list, page, total) when page < total do
+  defp next_page(list, page, total) when page < total do
     list ++ [{:next, page + 1}]
   end
 
-  def next_page(list, _page, _total), do: list
+  defp next_page(list, _page, _total), do: list
 
-  def first_page(list, page, window, true) when page - window > 1 do
+  defp first_page(list, page, window, true) when page - window > 1 do
     [{:first, 1} | list]
   end
 
-  def first_page(list, _page, _window, _included), do: list
+  defp first_page(list, _page, _window, _included), do: list
 
-  def last_page(list, page, total, window, true) when page + window < total do
+  defp last_page(list, page, total, window, true) when page + window < total do
     list ++ [{:last, total}]
   end
 
-  def last_page(list, _page, _total, _window, _included), do: list
+  defp last_page(list, _page, _total, _window, _included), do: list
 
-  def build_url(conn, nil), do: conn.request_path
+  defp build_url(conn, nil), do: conn.request_path
 
-  def build_url(conn, params) do
+  defp build_url(conn, params) do
     "#{conn.request_path}?#{build_query(params)}"
   end
 
-  @doc """
-  Constructs a query param from a keyword list
-  """
-  def build_query(params) do
+  defp build_query(params) do
     params |> Plug.Conn.Query.encode()
   end
 
-  def build_params(params, params2) do
+  defp build_params(params, params2) do
     Map.merge(params, params2) |> normalize_keys()
   end
 
-  def normalize_keys(params) when is_map(params) do
+  defp normalize_keys(params) when is_map(params) do
     for {key, val} <- params, into: %{}, do: {to_string(key), val}
   end
 
-  def normalize_keys(params), do: params
-
-  def build_options(opts) do
-    params = opts[:params] || %{}
-    theme = opts[:theme] || Application.get_env(:dissolver, :theme, :bootstrap)
-    opts = Keyword.merge(opts, params: params, theme: theme)
-
-    Keyword.merge(@default, opts)
-  end
+  defp normalize_keys(params), do: params
 end

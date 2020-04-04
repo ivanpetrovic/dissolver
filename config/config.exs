@@ -29,4 +29,4 @@ use Mix.Config
 #
 import_config "#{Mix.env()}.exs"
 
-config :dissolver, :html, theme: :simple
+config :dissolver, :html, theme: Dissolver.HTML.Simple

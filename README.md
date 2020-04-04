@@ -50,7 +50,7 @@ Generate the links using the view helpers
 <%= paginate @conn, @dissolver %>
 ```
 
-Dissolver provides a [list ](https://hexdocs.pm/dissolver/Dissolver.HTML.html#__using__/1) of themes for pagination. By default it uses bootstrap. To use some other, add to config/config.exs:
+Dissolver provides a [list ](https://hexdocs.pm/dissolver/Dissolver.HTML.html#__using__/1) of themes for pagination. By default it uses a simple theme. To set the theme provide a module that implements the , add to config/config.exs:
 ```elixir
 config :dissolver,
 	theme: :foundation

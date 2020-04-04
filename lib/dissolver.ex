@@ -18,9 +18,14 @@ defmodule Dissolver do
   Pagination for Ecto and Phoenix.
   """
 
+  # Should start with:
+  # app config options > macro's opts > calls options > request params
+  # Concerns for max page being a vector of attack. Should not be greater than max based on order
+
   defmacro __using__(opts \\ []) do
     quote do
       def paginate(query, params \\ %{}, options \\ []) do
+        IO.inspect({query, params, options, unquote(opts)})
         Dissolver.paginate(__MODULE__, query, params, Keyword.merge(unquote(opts), options))
       end
     end
@@ -30,10 +35,16 @@ defmodule Dissolver do
     paginate(repo, query, build_options(opts, params))
   end
 
+  # This is really messy.
+  # We have a struct with defaults that never get used
+  # We still have to look into config for defaults.
+  # Even then nill will override the default.
+  # @spec paginate(Ecto.Query.t(), any, keyword) :: {any, any}
   def paginate(repo, query, opts) do
+    # IO.inspect({repo, query, opts})
     per_page = Keyword.get(opts, :per_page)
     max_page = Keyword.get(opts, :max_page)
-    lazy = Keyword.get(opts, :lazy, false)
+    lazy = Keyword.get(opts, :lazy)
     total_count = get_total_count(opts[:total_count], repo, query)
     total_pages = get_total_pages(total_count, per_page)
     page = get_page(opts, total_pages)
@@ -52,9 +63,9 @@ defmodule Dissolver do
     {get_items(repo, query, per_page, offset, lazy), dissolver}
   end
 
-  defp get_items(repo, query, nil, _, true), do: query
+  defp get_items(_repo, query, nil, _, true), do: query
 
-  defp get_items(repo, query, limit, offset, true) do
+  defp get_items(_repo, query, limit, offset, true) do
     query
     |> limit(^limit)
     |> offset(^offset)
@@ -95,6 +106,7 @@ defmodule Dissolver do
     total_pages || 0
   end
 
+  # TODO: Refactor name, total_count is used too much.
   defp total_count(query = %{group_bys: [_ | _]}), do: total_row_count(query)
   defp total_count(query = %{from: %{source: {_, nil}}}), do: total_row_count(query)
 
@@ -138,9 +150,12 @@ defmodule Dissolver do
   end
 
   defp build_options(opts, params) do
+    opts
+
     page = Map.get(params, "page", @page) |> to_integer()
     per_page = default_per_page(opts) |> to_integer()
     max_page = Keyword.get(opts, :max_page, default_max_page())
+
     Keyword.merge(opts, page: page, per_page: per_page, params: params, max_page: max_page)
   end
 

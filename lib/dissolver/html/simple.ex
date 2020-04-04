@@ -1,10 +1,12 @@
 defmodule Dissolver.HTML.Simple do
+  @behaviour Dissolver.HTML.Theme
+  use Phoenix.HTML
+
   @moduledoc """
   This is a simple nav theme
   """
 
-  use Phoenix.HTML
-
+  @impl Dissolver.HTML.Theme
   def generate_links(page_list, additional_class) do
     content_tag :nav, class: build_html_class(additional_class) do
       for {label, _page, url, current} <- page_list do
