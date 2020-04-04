@@ -10,11 +10,11 @@ use Mix.Config
 
 # You can configure for your application as:
 #
-#     config :kerosene, key: :value
+#     config :dissolver, key: :value
 #
 # And access this configuration in your application as:
 #
-#     Application.get_env(:kerosene, :key)
+#     Application.get_env(:dissolver, :key)
 #
 # Or configure a 3rd-party app:
 #
@@ -27,7 +27,6 @@ use Mix.Config
 # Configuration from the imported file will override the ones defined
 # here (which is why it is important to import them last).
 #
-import_config "#{Mix.env}.exs"
+import_config "#{Mix.env()}.exs"
 
-config :kerosene, :html,
-	theme: :bootstrap
+config :dissolver, :html, theme: :bootstrap

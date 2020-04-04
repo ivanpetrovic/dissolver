@@ -1,4 +1,4 @@
-defmodule Kerosene do
+defmodule Dissolver do
   defstruct items: [],
             per_page: 0,
             max_page: 0,
@@ -21,7 +21,7 @@ defmodule Kerosene do
   defmacro __using__(opts \\ []) do
     quote do
       def paginate(query, params \\ %{}, options \\ []) do
-        Kerosene.paginate(__MODULE__, query, params, Keyword.merge(unquote(opts), options))
+        Dissolver.paginate(__MODULE__, query, params, Keyword.merge(unquote(opts), options))
       end
     end
   end
@@ -39,7 +39,7 @@ defmodule Kerosene do
     page = get_page(opts, total_pages)
     offset = get_offset(total_count, page, per_page)
 
-    kerosene = %Kerosene{
+    dissolver = %Dissolver{
       per_page: per_page,
       page: page,
       total_pages: total_pages,
@@ -49,7 +49,7 @@ defmodule Kerosene do
       params: opts[:params]
     }
 
-    {get_items(repo, query, per_page, offset, lazy), kerosene}
+    {get_items(repo, query, per_page, offset, lazy), dissolver}
   end
 
   defp get_items(repo, query, nil, _, true), do: query
@@ -146,13 +146,13 @@ defmodule Kerosene do
 
   defp default_per_page(opts) do
     case Keyword.get(opts, :per_page) do
-      nil -> Application.get_env(:kerosene, :per_page, @per_page)
+      nil -> Application.get_env(:dissolver, :per_page, @per_page)
       per_page -> per_page
     end
   end
 
   defp default_max_page() do
-    Application.get_env(:kerosene, :max_page, @max_page)
+    Application.get_env(:dissolver, :max_page, @max_page)
   end
 
   def to_integer(i) when is_integer(i), do: abs(i)

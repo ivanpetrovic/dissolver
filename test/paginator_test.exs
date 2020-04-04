@@ -1,6 +1,6 @@
-defmodule Kerosene.PaginatorTest do
+defmodule Dissolver.PaginatorTest do
   use ExUnit.Case, async: true
-  import Kerosene.Paginator
+  import Dissolver.Paginator
 
   test "next page only if there are more pages" do
     assert next_page([], 10, 10) == []
@@ -32,7 +32,7 @@ defmodule Kerosene.PaginatorTest do
   end
 
   test "build full abs url with params" do
-    params = [query: "foo", page: 2, per_page: 10, foo: [1,2]]
+    params = [query: "foo", page: 2, per_page: 10, foo: [1, 2]]
     conn = %{request_path: "http://localhost:4000/products"}
     expected = "http://localhost:4000/products?query=foo&page=2&per_page=10&foo[]=1&foo[]=2"
     assert build_url(conn, params) == expected

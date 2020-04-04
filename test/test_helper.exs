@@ -1,4 +1,4 @@
-Kerosene.Repo.start_link()
+Dissolver.Repo.start_link()
 ExUnit.start()
 
-Ecto.Adapters.SQL.Sandbox.mode(Kerosene.Repo, :manual)
+Ecto.Adapters.SQL.Sandbox.mode(Dissolver.Repo, :manual)

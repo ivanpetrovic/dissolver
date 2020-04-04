@@ -1,26 +1,26 @@
-# Kerosene
+# Dissolver
 
 Pagination for Ecto and Phoenix.
 
 
 ## Installation
 
-The package is [available in Hex](https://hex.pm/packages/kerosene), the package can be installed as:
+The package is [available in Hex](https://hex.pm/packages/dissolver), the package can be installed as:
 
-Add kerosene to your list of dependencies in `mix.exs`:
+Add dissolver to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
-  [{:kerosene, "~> 0.9.0"}]
+  [{:dissolver, "~> 0.9.0"}]
 end
 ```
 
-Add Kerosene to your `repo.ex`:
+Add Dissolver to your `repo.ex`:
 ```elixir
 defmodule MyApp.Repo do
   use Ecto.Repo, 
     otp_app: :testapp,
     adapter: Ecto.Adapters.Postgres
-  use Kerosene, per_page: 2
+  use Dissolver, per_page: 2
 end
 ```
 
@@ -28,12 +28,12 @@ end
 Start paginating your queries 
 ```elixir
 def index(conn, params) do
-  {products, kerosene} = 
+  {products, dissolver} =
   Product
   |> Product.with_lowest_price
   |> Repo.paginate(params)
 
-  render(conn, "index.html", products: products, kerosene: kerosene)
+  render(conn, "index.html", products: products, dissolver: dissolver)
 end
 ```
 
@@ -41,37 +41,37 @@ Add view helpers to your view
 ```elixir
 defmodule MyApp.ProductView do
   use MyApp.Web, :view
-  import Kerosene.HTML
+  import Dissolver.HTML
 end
 ```
 
 Generate the links using the view helpers
 ```elixir
-<%= paginate @conn, @kerosene %>
+<%= paginate @conn, @dissolver %>
 ```
 
-Kerosene provides a [list ](https://hexdocs.pm/kerosene/Kerosene.HTML.html#__using__/1) of themes for pagination. By default it uses bootstrap. To use some other, add to config/config.exs:
+Dissolver provides a [list ](https://hexdocs.pm/dissolver/Dissolver.HTML.html#__using__/1) of themes for pagination. By default it uses bootstrap. To use some other, add to config/config.exs:
 ```elixir
-config :kerosene,
+config :dissolver,
 	theme: :foundation
 ```
 
 If you need reduced number of links in pagination, you can use `simple mode` option, to display only Prev/Next links:
 ```elixir
-config :kerosene,
+config :dissolver,
 	mode:  :simple
 ```
 
-Building apis or SPA's, no problem Kerosene has support for Json.
+Building apis or SPA's, no problem Dissolver has support for Json.
 
 ```elixir
 defmodule MyApp.ProductView do
   use MyApp.Web, :view
-  import Kerosene.JSON
+  import Dissolver.JSON
 
-  def render("index.json", %{products: products, kerosene: kerosene, conn: conn}) do
+  def render("index.json", %{products: products, dissolver: dissolver, conn: conn}) do
     %{data: render_many(products, MyApp.ProductView, "product.json"),
-      pagination: paginate(conn, kerosene)}
+      pagination: paginate(conn, dissolver)}
   end
 
   def render("product.json", %{product: product}) do

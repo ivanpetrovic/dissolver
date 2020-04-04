@@ -1,14 +1,13 @@
 use Mix.Config
 
-config :kerosene, ecto_repos: [Kerosene.Repo]
+config :dissolver, ecto_repos: [Dissolver.Repo]
 
-config :kerosene, Kerosene.Repo,
+config :dissolver, Dissolver.Repo,
   username: "postgres",
   password: "postgres",
-  database: "kerosene_dev",
+  database: "dissolver_dev",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
 # shut up only log errors
-config :logger, :console,
-  level: :error
+config :logger, :console, level: :error

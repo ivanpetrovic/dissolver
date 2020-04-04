@@ -1,10 +1,10 @@
-defmodule Kerosene.Repo.Migrations.CreateProduct do
+defmodule Dissolver.Repo.Migrations.CreateProduct do
   use Ecto.Migration
 
   def change do
     create table(:products) do
-      add :name, :string
-      add :price, :decimal
+      add(:name, :string)
+      add(:price, :decimal)
 
       timestamps()
     end

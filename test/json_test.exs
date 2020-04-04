@@ -1,4 +1,4 @@
-defmodule Kerosene.JSONTest do
+defmodule Dissolver.JSONTest do
   use ExUnit.Case, async: true
 
   test "renders a list of links in json format" do
@@ -20,10 +20,9 @@ defmodule Kerosene.JSONTest do
       %{label: "Last", url: "/products?category=25&page=16", page: 16, current: false}
     ]
 
-    data = PaginatorData.page_list
-    output = Kerosene.JSON.render_page_list(data)
+    data = PaginatorData.page_list()
+    output = Dissolver.JSON.render_page_list(data)
 
     assert expected == output
   end
-
 end

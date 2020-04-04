@@ -1,9 +1,9 @@
-defmodule Kerosene.Product do
+defmodule Dissolver.Product do
   use Ecto.Schema
 
   schema "products" do
-    field :name, :string
-    field :price, :decimal
+    field(:name, :string)
+    field(:price, :decimal)
 
     timestamps()
   end
