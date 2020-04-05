@@ -73,7 +73,7 @@ If you need reduced number of links in pagination, you can use the `Dissolver.HT
 config :dissolver,
 	theme:  Dissolver.HTML.Simple
 ```
-Note this is also the default theme if not other theme option is provided. 
+Note this is also the default theme if no other theme option is provided. 
 
 Building apis or SPA's, no problem Dissolver has support for Json.
 
