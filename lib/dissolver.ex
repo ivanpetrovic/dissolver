@@ -14,7 +14,7 @@ defmodule Dissolver do
   Pagination for Ecto and Phoenix.
 
   Configuration's order of specificity:
-  Dissolver has some sensable defaults of which can be overriden by any of the following.
+  Dissolver has some sensible defaults of which can be overriden by any of the following.
   Config file are treated like globals will override defaults and can be overriden by the following.
   Request Params will override globals.
   Function arguments will override request params.
