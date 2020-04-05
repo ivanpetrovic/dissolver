@@ -17,17 +17,11 @@ defmodule Dissolver.JSON do
       end
 
 
-  Where `dissolver` is a `%Dissolver{}` struct returned from `Repo.paginate/2`.
+  Where `dissolver` is a `%Dissolver{}` struct returned from `Dissolver.paginate/2`.
 
   `paginate` helper takes keyword list of `options`.
     paginate(dissolver, window: 5, next_label: ">>", previous_label: "<<", first: true, last: true, first_label: "First", last_label: "Last")
   """
-  defmacro __using__(_opts \\ []) do
-    quote do
-      import Dissolver.JSON
-    end
-  end
-
   def paginate(conn, paginator, opts \\ []) do
     opts = build_options(opts)
 

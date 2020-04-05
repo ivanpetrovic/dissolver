@@ -1,7 +1,7 @@
 defmodule Dissolver do
   import Ecto.Query
 
-  alias Dissolver.{Paginator, Query}
+  alias Dissolver.Paginator
 
   @default [
     per_page: 10,
@@ -19,21 +19,9 @@ defmodule Dissolver do
   Request Params will override globals.
   Function arguments will override request params.
   """
-  defmacro __using__(macro_options \\ []) do
-    quote do
-      def paginate(query, params \\ %{}, call_options \\ []) do
-        Dissolver.paginate(
-          __MODULE__,
-          query,
-          params,
-          Keyword.merge(unquote(macro_options), call_options)
-        )
-      end
-    end
-  end
 
-  @spec paginate(Ecto.Repo.t(), Ecto.Query.t(), map(), nil | keyword()) :: {list(), Paginator.t()}
-  def paginate(repo, query, params, opts) do
+  @spec paginate(Ecto.Query.t(), map(), nil | keyword()) :: {list(), Paginator.t()}
+  def paginate(query, params, opts \\ []) do
     # TODO:
     # Parse options
     # Get totals
@@ -57,6 +45,8 @@ defmodule Dissolver do
     # |> Query.offset()
 
     options = build_options(opts, params)
+
+    repo = Application.fetch_env!(:dissolver, :repo)
 
     total_count = get_total_count(options[:total_count], repo, query)
     total_pages = get_total_pages(total_count, options[:per_page])

@@ -30,15 +30,17 @@ def deps do
 end
 ```
 
-Add Dissolver to your `repo.ex`:
+Add Dissolver's config to your `config/config.ex`:
 ```elixir
-defmodule MyApp.Repo do
-  use Ecto.Repo, 
-    otp_app: :testapp,
-    adapter: Ecto.Adapters.Postgres
-  use Dissolver, per_page: 2
-end
+  ...
+  config :dissolver,
+    repo: MyApp.Repo, 
+    theme: Dissolver.HTML.Bootstap, 
+    per_page: 2
+
+  import_config "#{Mix.env()}.exs"
 ```
+Note: See Config options for more settings.
 
 ## Usage
 Start paginating your queries 
@@ -47,7 +49,7 @@ def index(conn, params) do
   {products, dissolver} =
   Product
   |> Product.with_lowest_price
-  |> Repo.paginate(params)
+  |> Dissolver.paginate(params)
 
   render(conn, "index.html", products: products, dissolver: dissolver)
 end
@@ -66,17 +68,12 @@ Generate the links using the view helpers
 <%= paginate @conn, @dissolver %>
 ```
 
-Dissolver provides a [list ](https://hexdocs.pm/dissolver/Dissolver.HTML.html#__using__/1) of themes for pagination. By default it uses a simple theme. To set the theme provide a module that implements the , add to config/config.exs:
+If you need reduced number of links in pagination, you can use the `Dissolver.HTML.Simple` theme, to display only Prev/Next links:
 ```elixir
 config :dissolver,
-	theme: :foundation
+	theme:  Dissolver.HTML.Simple
 ```
-
-If you need reduced number of links in pagination, you can use `simple mode` option, to display only Prev/Next links:
-```elixir
-config :dissolver,
-	mode:  :simple
-```
+Note this is also the default theme if not other theme option is provided. 
 
 Building apis or SPA's, no problem Dissolver has support for Json.
 

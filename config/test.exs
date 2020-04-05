@@ -10,3 +10,7 @@ config :dissolver, Dissolver.Repo,
   pool: Ecto.Adapters.SQL.Sandbox
 
 config :logger, :console, level: :info
+
+config :dissolver,
+  repo: Dissolver.Repo,
+  per_page: 10

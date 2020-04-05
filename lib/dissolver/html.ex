@@ -14,7 +14,7 @@ defmodule Dissolver.HTML do
   now you have these view helpers in your template file.
       <%= paginate @conn, @page %>
 
-  Where `@page` is a `%Dissolver{}` struct returned from `Repo.paginate/2`.
+  Where `@page` is a `%Dissolver{}` struct returned from `Dissolver.paginate/2`.
 
   `paginate` helper takes keyword list of `options` and `params`.
     <%= paginate @conn, @page, window: 5, next_label: ">>", previous_label: "<<", first: true, last: true, first_label: "First", last_label: "Last" %>
