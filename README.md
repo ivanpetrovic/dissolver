@@ -5,7 +5,7 @@ This project is a fork of https://github.com/elixirdrops/kerosene.
 I thought to take it over because it does not look as if its being activly developed
 and I think there is a some more work before it's a release canidate.
 
-My hope is to refactor the code and tests to better the over all code quality as well as offer some needs features. 
+My hope is to refactor the code and tests to better the over all code quality as well as offer some needed features. 
 
 The two first new features will include:
 * Lazy query - Instead of pagination calling Repo.all it will return an Ecto query. This is useful for subqueries where you will passying the query to something like a preload. 
