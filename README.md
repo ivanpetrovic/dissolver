@@ -16,6 +16,10 @@ Issues I' like to address:
 * The way this lib queries for total counts is a bit odd since it's trying to account for groub_by and multi sourced froms. I'm going to see if we can't make this cleaner. 
 * The over all namespace of functions are in need of help. I will be refactoring a considerable amount of the functions. 
 
+--- 
+
+![CI](https://github.com/joshchernoff/dissolver/workflows/CI/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/joshchernoff/dissolver/badge.svg?branch=release_1)](https://coveralls.io/github/joshchernoff/dissolver?branch=release_1)
+
 Pagination for Ecto and Phoenix.
 
 
