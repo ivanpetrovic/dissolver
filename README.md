@@ -30,7 +30,7 @@ The package is [available in Hex](https://hex.pm/packages/dissolver), the packag
 Add dissolver to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
-  [{:dissolver, "~> 0.9.0"}]
+  [{:dissolver, github: "joshchernoff/dissolver"}]
 end
 ```
 
