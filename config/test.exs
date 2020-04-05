@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :dissolver, ecto_repos: [Dissolver.Repo]
 
@@ -9,5 +9,4 @@ config :dissolver, Dissolver.Repo,
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
-# shut up only log errors
-config :logger, :console, level: :error
+config :logger, :console, level: :info

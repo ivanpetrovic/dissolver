@@ -1,6 +1,6 @@
 defmodule Dissolver.HTML do
   use Phoenix.HTML
-  import Dissolver.Paginator, only: [build_options: 1]
+  alias Dissolver.Paginator
 
   @moduledoc """
   Html helpers to render the pagination links and more,
@@ -43,17 +43,12 @@ defmodule Dissolver.HTML do
 
       Dissolver.HTML.paginate(@conn, @dissolver, theme: :boostrap4, class: "paginate-sm")
   """
-  defmacro __using__(_opts \\ []) do
-    quote do
-      import Dissolver.HTML
-    end
-  end
 
   def paginate(conn, paginator, opts \\ []) do
-    opts = build_options(opts)
+    opts = Paginator.build_options(opts)
 
     conn
-    |> Dissolver.Paginator.paginate(paginator, opts)
+    |> Paginator.paginate(paginator, opts)
     |> render_page_list(opts)
   end
 

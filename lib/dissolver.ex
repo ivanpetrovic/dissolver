@@ -1,67 +1,84 @@
 defmodule Dissolver do
-  defstruct items: [],
-            per_page: 0,
-            max_page: 0,
-            page: 0,
-            total_pages: 0,
-            total_count: 0,
-            params: [],
-            lazy: false
-
   import Ecto.Query
 
-  @per_page 10
-  @max_page 100
-  @page 1
+  alias Dissolver.{Paginator, Query}
+
+  @default [
+    per_page: 10,
+    max_page: 100,
+    page: 1,
+    lazy: false
+  ]
 
   @moduledoc """
   Pagination for Ecto and Phoenix.
+
+  Configuration's order of specificity:
+  Dissolver has some sensable defaults of which can be overriden by any of the following.
+  Config file are treated like globals will override defaults and can be overriden by the following.
+  Request Params will override globals.
+  Function arguments will override request params.
   """
-
-  # Should start with:
-  # app config options > macro's opts > calls options > request params
-  # Concerns for max page being a vector of attack. Should not be greater than max based on order
-
-  defmacro __using__(opts \\ []) do
+  defmacro __using__(macro_options \\ []) do
     quote do
-      def paginate(query, params \\ %{}, options \\ []) do
-        IO.inspect({query, params, options, unquote(opts)})
-        Dissolver.paginate(__MODULE__, query, params, Keyword.merge(unquote(opts), options))
+      def paginate(query, params \\ %{}, call_options \\ []) do
+        Dissolver.paginate(
+          __MODULE__,
+          query,
+          params,
+          Keyword.merge(unquote(macro_options), call_options)
+        )
       end
     end
   end
 
+  @spec paginate(Ecto.Repo.t(), Ecto.Query.t(), map(), nil | keyword()) :: {list(), Paginator.t()}
   def paginate(repo, query, params, opts) do
-    paginate(repo, query, build_options(opts, params))
-  end
+    # TODO:
+    # Parse options
+    # Get totals
+    # Build a Query
+    # Run or return query
+    # Build a Paginator
 
-  # This is really messy.
-  # We have a struct with defaults that never get used
-  # We still have to look into config for defaults.
-  # Even then nill will override the default.
-  # @spec paginate(Ecto.Query.t(), any, keyword) :: {any, any}
-  def paginate(repo, query, opts) do
-    # IO.inspect({repo, query, opts})
-    per_page = Keyword.get(opts, :per_page)
-    max_page = Keyword.get(opts, :max_page)
-    lazy = Keyword.get(opts, :lazy)
-    total_count = get_total_count(opts[:total_count], repo, query)
-    total_pages = get_total_pages(total_count, per_page)
-    page = get_page(opts, total_pages)
-    offset = get_offset(total_count, page, per_page)
+    # Parse options
+    # options = build_options(opts, params)
 
-    dissolver = %Dissolver{
-      per_page: per_page,
-      page: page,
-      total_pages: total_pages,
-      total_count: total_count,
-      max_page: max_page,
-      lazy: lazy,
-      params: opts[:params]
+    # Get totals
+    # {:ok, %{total_count: total_count, total_pages: total_pages}} = get_totals()
+
+    # Build query
+    # To build a query we need:
+    # 1: the current query
+    # 2: a limit
+    # 3: a offset unless there is no offset
+    # query
+    # |> Query.limit(params, opts)
+    # |> Query.offset()
+
+    options = build_options(opts, params)
+
+    total_count = get_total_count(options[:total_count], repo, query)
+    total_pages = get_total_pages(total_count, options[:per_page])
+
+    page = get_page(options, total_pages)
+    offset = get_offset(total_count, page, options[:per_page])
+
+    {
+      get_items(repo, query, options[:per_page], offset, options[:lazy]),
+      %Paginator{
+        per_page: options[:per_page],
+        page: page,
+        total_pages: total_pages,
+        total_count: total_count,
+        max_page: options[:max_page],
+        params: params
+      }
     }
-
-    {get_items(repo, query, per_page, offset, lazy), dissolver}
   end
+
+  # defp build_query(query, nil, _): do: query
+  # defp build_query(query, limit, offset) do
 
   defp get_items(_repo, query, nil, _, true), do: query
 
@@ -93,20 +110,21 @@ defmodule Dissolver do
     end
   end
 
+  # TODO: This needs a whole refactor.
+  # Not of fan of how this is checking if group_by or multi source from.
+  # Maybe this should be its own module?
+  # Also the repeated use of total_count as a name bothers me.
   defp get_total_count(count, _repo, _query) when is_integer(count) and count >= 0, do: count
 
   defp get_total_count(_count, repo, query) do
-    total_pages =
-      query
-      |> exclude(:preload)
-      |> exclude(:order_by)
-      |> total_count()
-      |> repo.one()
-
-    total_pages || 0
+    query
+    |> exclude(:preload)
+    |> exclude(:order_by)
+    |> total_count()
+    # |> (&from(q in &1, select: fragment("count(*)"))).()
+    |> repo.one() || 0
   end
 
-  # TODO: Refactor name, total_count is used too much.
   defp total_count(query = %{group_bys: [_ | _]}), do: total_row_count(query)
   defp total_count(query = %{from: %{source: {_, nil}}}), do: total_row_count(query)
 
@@ -124,7 +142,7 @@ defmodule Dissolver do
     |> select(count("*"))
   end
 
-  def get_primary_key(query) do
+  defp get_primary_key(query) do
     new_query =
       case is_map(query) do
         true -> query.from.source |> elem(1)
@@ -136,48 +154,63 @@ defmodule Dissolver do
     |> hd
   end
 
-  def get_total_pages(_, nil), do: 1
+  defp get_total_pages(_, nil), do: 1
 
-  def get_total_pages(count, per_page) do
+  defp get_total_pages(count, per_page) do
     Float.ceil(count / per_page) |> trunc()
   end
 
-  def get_page(params, total_pages) do
+  defp build_options(opts, params) do
+    Keyword.merge(opts,
+      page: get_page(params),
+      per_page: get_per_page(opts),
+      params: params,
+      max_page: get_max_page(opts),
+      lazy: get_lazy(opts)
+    )
+  end
+
+  defp get_per_page(opts) do
+    case Keyword.get(opts, :per_page) do
+      nil -> Application.get_env(:dissolver, :per_page, @default[:per_page])
+      per_page -> per_page
+    end
+    |> to_integer()
+  end
+
+  # FIXME: I really don't understand this logic.
+  # My assumption is that max page is the limit at which you want some one to travel too.
+  # From this logic is would put you past the max page,
+  # also I don't know why you would allow to come in from params?
+  defp get_page(params, total_pages) do
     case params[:page] > params[:max_page] do
       true -> total_pages
       _ -> params[:page]
     end
   end
 
-  defp build_options(opts, params) do
-    opts
-
-    page = Map.get(params, "page", @page) |> to_integer()
-    per_page = default_per_page(opts) |> to_integer()
-    max_page = Keyword.get(opts, :max_page, default_max_page())
-
-    Keyword.merge(opts, page: page, per_page: per_page, params: params, max_page: max_page)
+  defp get_page(params) do
+    Map.get(params, "page", @default[:page]) |> to_integer()
   end
 
-  defp default_per_page(opts) do
-    case Keyword.get(opts, :per_page) do
-      nil -> Application.get_env(:dissolver, :per_page, @per_page)
-      per_page -> per_page
-    end
+  defp get_max_page(opts) do
+    Keyword.get(opts, :max_page) ||
+      Application.get_env(:dissolver, :max_page, @default[:max_page])
   end
 
-  defp default_max_page do
-    Application.get_env(:dissolver, :max_page, @max_page)
+  defp get_lazy(opts) do
+    Keyword.get(opts, :lazy) ||
+      Application.get_env(:dissolver, :lazy, @default[:lazy])
   end
 
-  def to_integer(i) when is_integer(i), do: abs(i)
+  defp to_integer(i) when is_integer(i), do: abs(i)
 
-  def to_integer(i) when is_binary(i) do
+  defp to_integer(i) when is_binary(i) do
     case Integer.parse(i) do
       {n, _} -> n
       _ -> 0
     end
   end
 
-  def to_integer(_), do: @page
+  defp to_integer(_), do: @default[:page]
 end

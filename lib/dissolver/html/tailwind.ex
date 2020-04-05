@@ -22,7 +22,7 @@ defmodule Dissolver.HTML.Tailwind do
   end
 
   defp build_html_class(additional_class) do
-    String.trim("text-center pagination " <> additional_class)
+    String.trim("text-center pagination #{additional_class}")
   end
 
   defp if_active_class(true), do: "bg-gray-300"

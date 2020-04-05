@@ -1,5 +1,27 @@
 defmodule Dissolver.Paginator do
+  @moduledoc """
+  This module is responsible for building the struct
+  used for navigating to the respective pages of a given query
+  """
+
   use Phoenix.HTML
+  alias __MODULE__
+
+  defstruct per_page: 0,
+            max_page: 0,
+            page: 0,
+            total_pages: 0,
+            total_count: 0,
+            params: []
+
+  @type t :: %__MODULE__{
+          per_page: integer(),
+          max_page: integer(),
+          page: integer() | nil,
+          total_pages: integer(),
+          total_count: integer(),
+          params: map()
+        }
 
   @default [
     window: 3,
@@ -12,18 +34,11 @@ defmodule Dissolver.Paginator do
     last_label: "Last"
   ]
 
-  @moduledoc """
-  Helpers to render the pagination links and more.
-  """
-
   @doc """
+  TODO:
   """
-  @spec paginate(
-          any,
-          atom | %{page: any, params: map, total_pages: any},
-          nil | maybe_improper_list | map
-        ) :: [any]
-  def paginate(conn, paginator, opts \\ []) do
+  @spec paginate(Plug.Conn.t(), t(), nil | maybe_improper_list | map) :: list()
+  def paginate(%Plug.Conn{} = conn, %Paginator{} = paginator, opts \\ []) do
     page = paginator.page
     total_pages = paginator.total_pages
     params = build_params(paginator.params, opts[:params])
