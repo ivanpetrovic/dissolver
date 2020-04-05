@@ -1,4 +1,20 @@
 # Dissolver
+## NOTE: This is a wip repo. It's not currently in working order and has many bugs. 
+
+This project is a fork of https://github.com/elixirdrops/kerosene.   
+I thought to take it over because it does not look as if its being activly developed
+and I think there is a some more work before it's a release canidate.
+
+My hope is to refactor the code and tests to better the over all code quality as well as offer some needs features. 
+
+The two first new features will include:
+* Lazy query - Instead of pagination calling Repo.all it will return an Ecto query. This is useful for subqueries where you will passying the query to something like a preload. 
+* Custom themes - Now you can pass a module as the source of your theme. 
+
+Issues I' like to address:
+* Many of the functions are public for the sake of testing. I would like refactor all the test so that the modules only exposed required interfaces. 
+* The way this lib queries for total counts is a bit odd since it's trying to account for groub_by and multi sourced froms. I'm going to see if we can't make this cleaner. 
+* The over all namespace of functions are in need of help. I will be refactoring a considerable amount of the functions. 
 
 Pagination for Ecto and Phoenix.
 
