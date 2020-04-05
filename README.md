@@ -3,7 +3,7 @@
 
 This project is a fork of https://github.com/elixirdrops/kerosene.   
 I thought to take it over because it does not look as if its being activly developed
-and I think there is a some more work before it's a release canidate.
+and I think there is some more work needed before it's a release canidate.
 
 My hope is to refactor the code and tests to better the over all code quality as well as offer some needed features. 
 
