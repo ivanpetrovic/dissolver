@@ -18,7 +18,7 @@ Issues I' like to address:
 
 --- 
 
-![CI](https://github.com/MorphicPro/dissolver/workflows/CI/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/MorphicPro/dissolver/badge.svg?branch=release_1)](https://coveralls.io/github/MorphicPro/dissolver?branch=release_1)
+![CI](https://github.com/MorphicPro/dissolver/workflows/CI/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/MorphicPro/dissolver/badge.svg?branch=master)](https://coveralls.io/github/MorphicPro/dissolver?branch=master)
 
 Pagination for Ecto and Phoenix.
 
