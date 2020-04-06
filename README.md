@@ -135,9 +135,8 @@ end
 You can also send in options to paginate helper look at the docs for more details.
 
 ## Contributing
-	
-Please do send pull requests and bug reports, positive feedback is always welcome.
-
+If you can start by writing an issue ticket. 
+Then if you like feel free to fork and submit a PR for review. 
 
 ## Acknowledgement
 
