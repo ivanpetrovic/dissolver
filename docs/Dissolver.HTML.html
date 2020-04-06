@@ -5,10 +5,10 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.21.3">
-    <meta name="project" content="Dissolver v0.9.0">
-    <title>Dissolver.HTML — Dissolver v0.9.0</title>
+    <meta name="project" content="Dissolver v0.9.1">
+    <title>Dissolver.HTML — Dissolver v0.9.1</title>
     <link rel="stylesheet" href="dist/elixir-0ab8a6a80ebaaa287431.css" />
-    <script src="dist/sidebar_items-7a36d21dad.js"></script>
+    <script src="dist/sidebar_items-d596a6c3f8.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-a225d03098e64fef431a.js"></script>
   </head>
@@ -43,7 +43,7 @@
       <a href="Dissolver.html" class="sidebar-projectName">
 Dissolver      </a>
       <h2 class="sidebar-projectVersion">
-        v0.9.0
+        v0.9.1
       </h2>
     </div>
   </div>
@@ -63,8 +63,8 @@ Dissolver      </a>
     <div id="content" class="content-inner">
 
       <h1>
-        <small class="app-vsn">Dissolver v0.9.0</small>
-Dissolver.HTML          <a href="https://github.com/MorphicPro/dissolver/blob/v0.9.0/lib/dissolver/html.ex#L1" title="View Source" class="view-source" rel="help">
+        <small class="app-vsn">Dissolver v0.9.1</small>
+Dissolver.HTML          <a href="https://github.com/MorphicPro/dissolver/blob/v0.9.1/lib/dissolver/html.ex#L1" title="View Source" class="view-source" rel="help">
             <span class="icon-code" aria-hidden="true"></span>
             <span class="sr-only">View Source</span>
           </a>
@@ -74,10 +74,10 @@ Dissolver.HTML          <a href="https://github.com/MorphicPro/dissolver/blob/v0
         <section id="moduledoc">
 <p>An Html helper to render the pagination links,</p>
 <p>Start by importing the <a href="#content"><code class="inline">Dissolver.HTML</code></a> in your view module.</p>
-<pre><code class="nohighlight makeup elixir"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.ProductView</span><span class="w"> </span><span class="k" data-group-id="3395032968-1">do</span><span class="w">
+<pre><code class="nohighlight makeup elixir"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.ProductView</span><span class="w"> </span><span class="k" data-group-id="3304456242-1">do</span><span class="w">
   </span><span class="kn">use</span><span class="w"> </span><span class="nc">MyApp.Web</span><span class="p">,</span><span class="w"> </span><span class="ss">:view</span><span class="w">
   </span><span class="kn">import</span><span class="w"> </span><span class="nc">Dissolver.HTML</span><span class="w">
-</span><span class="k" data-group-id="3395032968-1">end</span></code></pre>
+</span><span class="k" data-group-id="3304456242-1">end</span></code></pre>
 <p>now you have the <a href="#paginate/2"><code class="inline">paginate/2</code></a> view helper in your template file.</p>
 <pre><code class="nohighlight makeup elixir"><span class="o">&lt;</span><span class="p">%</span><span class="o">=</span><span class="w"> </span><span class="n">paginate</span><span class="w"> </span><span class="na">@conn</span><span class="p">,</span><span class="w"> </span><span class="na">@paginator</span><span class="w"> </span><span class="p">%</span><span class="o">&gt;</span></code></pre>
 <p>Where <code class="inline">@page</code> is a <code class="inline">%Dissolver.Paginator{}</code> struct returned from <a href="Dissolver.html#paginate/2"><code class="inline">Dissolver.paginate/2</code></a>.</p>
@@ -122,7 +122,7 @@ Functions          </h1>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">paginate(conn, paginator, opts \\ [])</h1>
-      <a href="https://github.com/MorphicPro/dissolver/blob/v0.9.0/lib/dissolver/html.ex#L48" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/MorphicPro/dissolver/blob/v0.9.1/lib/dissolver/html.ex#L48" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -130,13 +130,13 @@ Functions          </h1>
   <section class="docstring">
 <p>Generates the HTML pagination links for a given page returned by Dissolver.</p>
 <p>Example:</p>
-<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Dissolver.HTML</span><span class="o">.</span><span class="n">paginate</span><span class="p" data-group-id="9947634049-1">(</span><span class="na">@conn</span><span class="p">,</span><span class="w"> </span><span class="na">@dissolver</span><span class="p" data-group-id="9947634049-1">)</span></code></pre>
+<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Dissolver.HTML</span><span class="o">.</span><span class="n">paginate</span><span class="p" data-group-id="0041606999-1">(</span><span class="na">@conn</span><span class="p">,</span><span class="w"> </span><span class="na">@dissolver</span><span class="p" data-group-id="0041606999-1">)</span></code></pre>
 <p>Path can be overriden by adding setting <code class="inline">:path</code> in the <code class="inline">opts</code>.
 For example:</p>
-<pre><code class="nohighlight makeup elixir"><span class="nc">Dissolver.HTML</span><span class="o">.</span><span class="n">paginate</span><span class="p" data-group-id="9067685236-1">(</span><span class="na">@conn</span><span class="p">,</span><span class="w"> </span><span class="na">@dissolver</span><span class="p">,</span><span class="w"> </span><span class="ss">path</span><span class="p">:</span><span class="w"> </span><span class="n">product_path</span><span class="p" data-group-id="9067685236-2">(</span><span class="na">@conn</span><span class="p">,</span><span class="w"> </span><span class="ss">:index</span><span class="p">,</span><span class="w"> </span><span class="ss">foo</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;bar&quot;</span><span class="p" data-group-id="9067685236-2">)</span><span class="p" data-group-id="9067685236-1">)</span></code></pre>
+<pre><code class="nohighlight makeup elixir"><span class="nc">Dissolver.HTML</span><span class="o">.</span><span class="n">paginate</span><span class="p" data-group-id="6714852028-1">(</span><span class="na">@conn</span><span class="p">,</span><span class="w"> </span><span class="na">@dissolver</span><span class="p">,</span><span class="w"> </span><span class="ss">path</span><span class="p">:</span><span class="w"> </span><span class="n">product_path</span><span class="p" data-group-id="6714852028-2">(</span><span class="na">@conn</span><span class="p">,</span><span class="w"> </span><span class="ss">:index</span><span class="p">,</span><span class="w"> </span><span class="ss">foo</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;bar&quot;</span><span class="p" data-group-id="6714852028-2">)</span><span class="p" data-group-id="6714852028-1">)</span></code></pre>
 <p>Additional panigation class can be added by adding setting <code class="inline">:class</code> in the <code class="inline">opts</code>.
 For example:</p>
-<pre><code class="nohighlight makeup elixir"><span class="nc">Dissolver.HTML</span><span class="o">.</span><span class="n">paginate</span><span class="p" data-group-id="1529772582-1">(</span><span class="na">@conn</span><span class="p">,</span><span class="w"> </span><span class="na">@dissolver</span><span class="p">,</span><span class="w"> </span><span class="ss">theme</span><span class="p">:</span><span class="w"> </span><span class="ss">:boostrap4</span><span class="p">,</span><span class="w"> </span><span class="ss">class</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;paginate-sm&quot;</span><span class="p" data-group-id="1529772582-1">)</span></code></pre>
+<pre><code class="nohighlight makeup elixir"><span class="nc">Dissolver.HTML</span><span class="o">.</span><span class="n">paginate</span><span class="p" data-group-id="6805852168-1">(</span><span class="na">@conn</span><span class="p">,</span><span class="w"> </span><span class="na">@dissolver</span><span class="p">,</span><span class="w"> </span><span class="ss">theme</span><span class="p">:</span><span class="w"> </span><span class="ss">:boostrap4</span><span class="p">,</span><span class="w"> </span><span class="ss">class</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;paginate-sm&quot;</span><span class="p" data-group-id="6805852168-1">)</span></code></pre>
   </section>
 </section>
           </div>
