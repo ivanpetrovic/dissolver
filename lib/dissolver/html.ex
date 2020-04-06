@@ -3,18 +3,25 @@ defmodule Dissolver.HTML do
   alias Dissolver.Paginator
 
   @moduledoc """
-  Html helpers to render the pagination links and more,
-  import the `Dissolver.HTML` in your view module.
+  An Html helper to render the pagination links,
 
-      defmodule MyApp.ProductView do
-        use MyApp.Web, :view
-        import Dissolver.HTML
-      end
+  Start by importing the `Dissolver.HTML` in your view module.
 
-  now you have these view helpers in your template file.
-      <%= paginate @conn, @page %>
+  ```
+  defmodule MyApp.ProductView do
+    use MyApp.Web, :view
+    import Dissolver.HTML
+  end
+  ```
 
-  Where `@page` is a `%Dissolver{}` struct returned from `Dissolver.paginate/2`.
+
+
+  now you have the `paginate/2` view helper in your template file.
+  ```
+  <%= paginate @conn, @paginator %>
+  ```
+
+  Where `@page` is a `%Dissolver.Paginator{}` struct returned from `Dissolver.paginate/2`.
 
   `paginate` helper takes keyword list of `options` and `params`.
     <%= paginate @conn, @page, window: 5, next_label: ">>", previous_label: "<<", first: true, last: true, first_label: "First", last_label: "Last" %>
@@ -22,12 +29,6 @@ defmodule Dissolver.HTML do
 
   @doc """
   Generates the HTML pagination links for a given page returned by Dissolver.
-
-  The `theme` indicates which CSS framework you are using. The default is
-  `:bootstrap`, but you can add your own using the `Dissolver.HTML.do_paginate/3` function
-  if desired. Dissolver provides few themes out of the box:
-
-      [:bootstrap, :foundation, :semantic, :simple, :tailwind]
 
   Example:
 

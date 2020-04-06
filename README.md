@@ -1,5 +1,5 @@
 # Dissolver
-## NOTE: This is a wip repo. It's not currently in working order and has many bugs. 
+### NOTE: This is a wip repo. It's not currently in working order and has many bugs. 
 
 This project is a fork of https://github.com/elixirdrops/kerosene.   
 I thought to take it over because it does not look as if its being activly developed
@@ -18,7 +18,7 @@ Issues I' like to address:
 
 --- 
 
-![CI](https://github.com/joshchernoff/dissolver/workflows/CI/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/joshchernoff/dissolver/badge.svg?branch=release_1)](https://coveralls.io/github/joshchernoff/dissolver?branch=release_1)
+![CI](https://github.com/MorphicPro/dissolver/workflows/CI/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/MorphicPro/dissolver/badge.svg?branch=release_1)](https://coveralls.io/github/MorphicPro/dissolver?branch=release_1)
 
 Pagination for Ecto and Phoenix.
 
@@ -30,7 +30,7 @@ The package is [available in Hex](https://hex.pm/packages/dissolver), the packag
 Add dissolver to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
-  [{:dissolver, github: "joshchernoff/dissolver"}]
+  [{:dissolver, github: "MorphicPro/dissolver"}]
 end
 ```
 
@@ -50,16 +50,16 @@ Note: See Config options for more settings.
 Start paginating your queries 
 ```elixir
 def index(conn, params) do
-  {products, dissolver} =
+  {products, paginator} =
   Product
   |> Product.with_lowest_price
   |> Dissolver.paginate(params)
 
-  render(conn, "index.html", products: products, dissolver: dissolver)
+  render(conn, "index.html", products: products, paginator: paginator)
 end
 ```
 
-Add view helpers to your view 
+Add the view helper to your view 
 ```elixir
 defmodule MyApp.ProductView do
   use MyApp.Web, :view

@@ -2,6 +2,9 @@ defmodule Dissolver.Paginator do
   @moduledoc """
   This module is responsible for building the struct
   used for navigating to the respective pages of a given query
+
+  The HTML and JSON view helper will call into this module calling the `paginate/3` passing the
+  Plug.Conn, along with a Hydrated version of this struct.
   """
 
   use Phoenix.HTML

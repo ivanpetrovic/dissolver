@@ -6,7 +6,7 @@ defmodule Dissolver.Mixfile do
     [
       app: :dissolver,
       version: @version,
-      elixir: "~> 1.2",
+      elixir: "~> 1.9",
       elixirc_paths: path(Mix.env()),
       package: package(),
       build_embedded: Mix.env() == :prod,
@@ -14,12 +14,16 @@ defmodule Dissolver.Mixfile do
       deps: deps(),
       aliases: aliases(),
       name: "Dissolver",
-      docs: [source_ref: "v#{@version}", main: "Dissolver"],
-      source_url: "https://github.com/joshchernoff/dissolver",
+      docs: [
+        source_ref: "v#{@version}",
+        main: "Dissolver",
+        extras: ["README.md"]
+      ],
+      source_url: "https://github.com/MorphicPro/dissolver",
       description: """
       Pagination for Ecto and Phoenix.
       """,
-      preferred_cli_env: [credo: :test, "coveralls.html": :test],
+      preferred_cli_env: [credo: :test, "coveralls.html": :test, "gen.docs": :docs],
       test_coverage: [tool: ExCoveralls]
     ]
   end
@@ -51,7 +55,7 @@ defmodule Dissolver.Mixfile do
       {:ecto_sql, "~> 3.4"},
       # Test dependencies
       {:postgrex, "~> 0.15", only: [:test]},
-      {:credo, "1.3.2", only: [:test]},
+      {:credo, "~> 1.3", only: [:test]},
       {:excoveralls, "~> 0.12", only: [:test]},
       # Docs dependencies
       {:earmark, "~> 1.4", only: :docs},
@@ -68,9 +72,9 @@ defmodule Dissolver.Mixfile do
 
   defp package do
     [
-      maintainers: ["Josh Chernoff"],
+      maintainers: ["Josh Chernoff <jchernoff@morphic.pro>"],
       licenses: ["MIT"],
-      links: %{github: "https://github.com/joshchernoff/dissolver"},
+      links: %{github: "https://github.com/MorphicPro/dissolver"},
       files:
         ~w(lib test config) ++
           ~w(CHANGELOG.md LICENSE.md mix.exs README.md)
@@ -81,7 +85,8 @@ defmodule Dissolver.Mixfile do
     [
       "ecto.setup": ["ecto.create --quiet", "ecto.migrate"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.setup", "test"]
+      test: ["ecto.setup", "test"],
+      "gen.docs": ["docs -o docs"]
     ]
   end
 end
