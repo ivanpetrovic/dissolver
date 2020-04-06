@@ -30,7 +30,7 @@ Until then you will need to install this from github.
 
 ## Installation
 add Dissolver to your mix.exs dependencies:
-```
+```elixir
 def deps do
   [
     {:dissolver, github: 'MorphicPro/dissolver'}
@@ -40,8 +40,7 @@ end
 
 Next provide Dissolver your Repo module via the config.
 Add the following to your config:
-```
-
+```elixir
 ...
 config :dissolver,
   repo: MyApp.Repo
@@ -55,7 +54,7 @@ Now you are ready to start using Dissolver.
 
 ## Usage
 Start paginating your queries
-```
+```elixir
 def index(conn, params) do
   {products, paginator} =
   Product
@@ -67,7 +66,7 @@ end
 ```
 
 Add the view helper to your view
-```
+```elixir
 defmodule MyApp.ProductView do
   use MyApp.Web, :view
   import Dissolver.HTML
