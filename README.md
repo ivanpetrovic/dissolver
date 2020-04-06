@@ -1,3 +1,7 @@
+---
+permalink: /docs/index.html
+---
+
 # Dissolver
 ### NOTE: This is a wip repo. It's not currently in working order and has many bugs. 
 
