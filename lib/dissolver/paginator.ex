@@ -10,20 +10,28 @@ defmodule Dissolver.Paginator do
   use Phoenix.HTML
   alias __MODULE__
 
-  defstruct per_page: 0,
-            max_page: 0,
-            page: 0,
-            total_pages: 0,
-            total_count: 0,
-            params: []
+  defstruct per_page: 20,
+            max_per_page: nil,
+            max_page: nil,
+            max_count: nil,
+            page: 1,
+            total_pages: nil,
+            total_count: nil,
+            params: [],
+            lazy: false,
+            theme: Dissolver.HTML.Simple
 
   @type t :: %__MODULE__{
-          per_page: integer(),
-          max_page: integer(),
-          page: integer() | nil,
-          total_pages: integer(),
-          total_count: integer(),
-          params: map()
+          per_page: integer,
+          max_per_page: integer,
+          max_page: integer,
+          max_count: integer,
+          page: integer,
+          total_pages: integer,
+          total_count: integer,
+          params: map,
+          lazy: boolean,
+          theme: Dissolver.HTML.Theme.t()
         }
 
   @default [

@@ -12,5 +12,4 @@ config :dissolver, Dissolver.Repo,
 config :logger, :console, level: :info
 
 config :dissolver,
-  repo: Dissolver.Repo,
-  per_page: 10
+  repo: Dissolver.Repo

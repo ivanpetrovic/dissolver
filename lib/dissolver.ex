@@ -1,15 +1,4 @@
 defmodule Dissolver do
-  import Ecto.Query
-
-  alias Dissolver.Paginator
-
-  @default [
-    per_page: 10,
-    max_page: 0,
-    page: 1,
-    lazy: false
-  ]
-
   @moduledoc """
   Pagination for Ecto and Phoenix.
 
@@ -100,56 +89,138 @@ defmodule Dissolver do
       return an Ecto.Query rather than call Repo.all. This is useful for when you need to paginate
       on an association via a preload. TODO: provide example.
   ##
-
-
   """
+
+  import Ecto.Query
+
+  alias Dissolver.Paginator
 
   @spec paginate(Ecto.Query.t(), map(), nil | keyword()) :: {list(), Paginator.t()}
   def paginate(query, params, opts \\ []) do
-    # TODO:
-    # Parse options
-    # Get totals
-    # Build a Query
-    # Run or return query
-    # Build a Paginator
-
-    # Parse options
-    # options = build_options(opts, params)
-
-    # Get totals
-    # {:ok, %{total_count: total_count, total_pages: total_pages}} = get_totals()
-
-    # Build query
-    # To build a query we need:
-    # 1: the current query
-    # 2: a limit
-    # 3: a offset unless there is no offset
-    # query
-    # |> Query.limit(params, opts)
-    # |> Query.offset()
-
-    options = build_options(opts, params)
-
     repo = Application.fetch_env!(:dissolver, :repo)
 
-    total_count = get_total_count(options[:total_count], repo, query)
-    total_pages = get_total_pages(total_count, options[:per_page])
+    process_options(opts)
+    |> process_params(params)
+    |> put_total_count(repo, query)
+    |> put_total_pages()
+    # |> put_max_count()
+    # |> put_max_page()
+    # |> put_max_per_page()
+    # |> put_page()
+    |> process_query(query)
+    |> return_query_results(repo)
 
-    page = get_page(options, total_pages)
-    offset = get_offset(total_count, page, options[:per_page])
+    # FIXME: Bug:
+    # max_page should not be greater than totlal pages.
+    # Thus max_page requires total_pages to be calculated first.
+    # If max_page is 0 or greater than total pages then max_page should equal total_pages
+    # options = build_options(opts, params) |> IO.inspect()
+
+    # page = get_page(options, total_pages)
+    # offset = get_offset(total_count, page, options[:per_page])
+
+    # {
+    #   get_items(repo, query, options[:per_page], offset, options[:lazy]),
+
+    # }
+  end
+
+  defp process_options(opts) do
+    app_config =
+      %{
+        per_page: Application.get_env(:dissolver, :per_page),
+        max_per_page: Application.get_env(:dissolver, :max_per_page),
+        max_page: Application.get_env(:dissolver, :max_page),
+        max_count: Application.get_env(:dissolver, :max_count),
+        lazy: Application.get_env(:dissolver, :lazy)
+      }
+      |> drop_nil()
+
+    opts_map =
+      %{
+        per_page: Keyword.get(opts, :per_page),
+        max_per_page: Keyword.get(opts, :max_per_page),
+        max_page: Keyword.get(opts, :max_page),
+        max_count: Keyword.get(opts, :max_count),
+        lazy: Keyword.get(opts, :lazy)
+      }
+      |> drop_nil()
+
+    parsed_opts = Map.merge(app_config, opts_map)
+
+    struct(Dissolver.Paginator, parsed_opts)
+  end
+
+  # TODO: Add total_count as option
+  defp process_params(paginator, params) do
+    safe_params =
+      %{
+        page: Map.get(params, :page),
+        per_page: Map.get(params, :per_page)
+      }
+      |> drop_nil()
+
+    Map.merge(paginator, safe_params)
+  end
+
+  # TODO: refactor
+  defp put_total_count(paginator, repo, query) do
+    %{paginator | total_count: get_total_count(nil, repo, query)}
+  end
+
+  # TODO: refactor
+  defp put_total_pages(%{total_count: total_count, per_page: per_page} = paginator) do
+    %{paginator | total_pages: get_total_pages(total_count, per_page)}
+  end
+
+  # TODO: refactor
+  defp process_query(%{per_page: per_page} = paginator, query) do
+    offset = get_offset(paginator)
 
     {
-      get_items(repo, query, options[:per_page], offset, options[:lazy]),
-      %Paginator{
-        per_page: options[:per_page],
-        page: page,
-        total_pages: total_pages,
-        total_count: total_count,
-        max_page: options[:max_page],
-        params: params
-      }
+      paginator,
+      query
+      |> limit(^per_page)
+      |> offset(^offset)
     }
   end
+
+  defp return_query_results({%{lazy: false} = paginator, query}, repo) do
+    {repo.all(query), paginator}
+  end
+
+  # Utils ---
+
+  defp drop_nil(%{} = map) do
+    map
+    |> Enum.filter(fn {_, v} -> v end)
+    |> Enum.into(%{})
+  end
+
+  """
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  """
 
   # defp build_query(query, nil, _): do: query
   # defp build_query(query, limit, offset) do
@@ -171,7 +242,7 @@ defmodule Dissolver do
     |> repo.all
   end
 
-  defp get_offset(total_pages, page, per_page) do
+  defp get_offset(%{total_pages: total_pages, page: page, per_page: per_page}) do
     page =
       case page > total_pages do
         true -> total_pages
@@ -184,10 +255,7 @@ defmodule Dissolver do
     end
   end
 
-  # TODO: This needs a whole refactor.
-  # Not of fan of how this is checking if group_by or multi source from.
-  # Maybe this should be its own module?
-  # Also the repeated use of total_count as a name bothers me.
+  # This allows the end user to set a value greater than the real total_count.
   defp get_total_count(count, _repo, _query) when is_integer(count) and count >= 0, do: count
 
   defp get_total_count(_count, repo, query) do
@@ -198,6 +266,11 @@ defmodule Dissolver do
     # |> (&from(q in &1, select: fragment("count(*)"))).()
     |> repo.one() || 0
   end
+
+  # TODO: This needs a whole refactor.
+  # Not of fan of how this is checking if group_by or multi source from.
+  # Maybe this should be its own module?
+  # Also the repeated use of total_count as a name bothers me.
 
   defp total_count(query = %{group_bys: [_ | _]}), do: total_row_count(query)
   defp total_count(query = %{from: %{source: {_, nil}}}), do: total_row_count(query)
@@ -257,6 +330,8 @@ defmodule Dissolver do
   # From this logic is would put you past the max page,
   # also I don't know why you would allow to come in from params?
   defp get_page(params, total_pages) do
+    IO.inspect({"get_page/2", params, total_pages})
+
     case params[:page] > params[:max_page] do
       true -> total_pages
       _ -> params[:page]
