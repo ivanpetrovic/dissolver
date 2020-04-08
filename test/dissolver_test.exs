@@ -1,7 +1,7 @@
 defmodule DissolverTest do
   use ExUnit.Case, async: false
 
-  alias Dissolver.{Paginator, Product, Repo}
+  alias Dissolver.{Product, Repo}
 
   import Ecto.Query
 
@@ -26,7 +26,7 @@ defmodule DissolverTest do
   end
 
   defp configure_max_count(conn) do
-    Application.put_env(:dissolver, :max_count, 20)
+    Application.put_env(:dissolver, :max_count, 40)
     {:ok, conn}
   end
 
@@ -42,17 +42,6 @@ defmodule DissolverTest do
     Application.put_env(:dissolver, :max_count, nil)
     Application.put_env(:dissolver, :max_page, nil)
     Application.put_env(:dissolver, :lazy, nil)
-  end
-
-  defp get_env do
-    [
-      per_page: Application.get_env(:dissolver, :per_page, nil),
-      max_per_page: Application.get_env(:dissolver, :max_per_page, nil),
-      max_per: Application.get_env(:dissolver, :max_per, nil),
-      max_count: Application.get_env(:dissolver, :max_count, nil),
-      max_page: Application.get_env(:dissolver, :max_page, nil),
-      lazy: Application.get_env(:dissolver, :lazy, nil)
-    ]
   end
 
   defp create_products do
@@ -165,7 +154,7 @@ defmodule DissolverTest do
 
     test "paginate/3 can configure :max_page" do
       create_products()
-      {_items, paginator} = Product |> Dissolver.paginate(%{}, per_page: 10)
+      {_items, paginator} = Product |> Dissolver.paginate(%{}, per_page: 10, max_per_page: 30)
       assert paginator.per_page == 10
       assert paginator.page == 1
       assert paginator.max_page == 3
@@ -197,7 +186,7 @@ defmodule DissolverTest do
       create_products()
       {_items, paginator} = Product |> Dissolver.paginate(%{})
 
-      assert paginator.total_count == 20
+      assert paginator.total_count == 30
     end
 
     test "paginate/3 can accept :max_count" do
@@ -207,6 +196,16 @@ defmodule DissolverTest do
       assert paginator.max_count == 20
       assert paginator.total_count == 20
     end
+
+    test "paginate/3 can constain :max_count" do
+      create_products()
+      {_items, paginator} = Product |> Dissolver.paginate(%{"page" => "3"}, max_count: 20)
+
+      assert paginator.max_count == 20
+      assert paginator.total_count == 20
+      assert paginator.page == 2
+      assert paginator.total_pages == 2
+    end
   end
 
   describe ":lazy" do
@@ -214,14 +213,14 @@ defmodule DissolverTest do
 
     test "paginate/3 can configure :lazy" do
       create_products()
-      {query, paginator} = Product |> Dissolver.paginate(%{})
+      {query, _paginator} = Product |> Dissolver.paginate(%{})
       refute is_list(query)
       assert is_struct(query)
     end
 
     test "paginate/3 can accept :lazy" do
       create_products()
-      {query, paginator} = Product |> Dissolver.paginate(%{}, lazy: true)
+      {query, _paginator} = Product |> Dissolver.paginate(%{}, lazy: true)
       refute is_list(query)
       assert is_struct(query)
     end

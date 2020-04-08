@@ -209,9 +209,7 @@ defmodule Dissolver do
   defp max_page_constraint(
          %{
            per_page: per_page,
-           max_page: max_page,
-           total_pages: total_pages,
-           total_count: total_count
+           max_page: max_page
          } = paginator
        ) do
     %{
@@ -220,8 +218,6 @@ defmodule Dissolver do
         total_count: max_page * per_page
     }
   end
-
-  defp max_page_constraint(paginator), do: paginator
 
   defp max_count_constraint(%{max_count: nil} = paginator), do: paginator
 
@@ -272,8 +268,8 @@ defmodule Dissolver do
   defp page_constraint(paginator), do: paginator
 
   # TODO: refactor
-  defp process_query(%{per_page: per_page} = paginator, query) do
-    offset = get_offset(paginator)
+  defp process_query(%{page: page, per_page: per_page} = paginator, query) do
+    offset = (page - 1) * per_page
 
     {
       paginator,
@@ -281,19 +277,6 @@ defmodule Dissolver do
       |> limit(^per_page)
       |> offset(^offset)
     }
-  end
-
-  defp get_offset(%{total_pages: total_pages, page: page, per_page: per_page}) do
-    page =
-      case page > total_pages do
-        true -> total_pages
-        _ -> page
-      end
-
-    case page > 0 do
-      true -> (page - 1) * per_page
-      _ -> 0
-    end
   end
 
   defp return_query_results({%{lazy: false} = paginator, query}, repo) do
