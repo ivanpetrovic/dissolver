@@ -1,5 +1,5 @@
-## next
-* Don't require postgrex as a runtime dependency
+## v0.9.2 (2020-04-08)
+* Refactor config/options 
 
 ## v0.4.0 (2016-10-01)
 * Bugfix handle list in query params
