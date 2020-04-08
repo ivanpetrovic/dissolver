@@ -101,9 +101,9 @@ defmodule Dissolver do
 
     process_options(opts)
     |> process_params(params)
-    |> max_per_page_constraint()
     |> put_total_count(repo, query)
     |> put_total_pages()
+    |> max_per_page_constraint()
     |> max_page_constraint()
     |> max_count_constraint()
     |> page_constraint()
@@ -187,6 +187,8 @@ defmodule Dissolver do
        when per_page > max_per_page do
     %{paginator | per_page: max_per_page}
   end
+
+  defp max_per_page_constraint(paginator), do: paginator
 
   defp max_page_constraint(%{max_page: nil, total_pages: total_pages} = paginator) do
     %{paginator | max_page: total_pages}
