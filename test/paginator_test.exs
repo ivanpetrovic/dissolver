@@ -1,5 +1,5 @@
 defmodule Dissolver.PaginatorTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case
 
   # TODO: spec out Paginator per its open interface. No need to expose private functions
 

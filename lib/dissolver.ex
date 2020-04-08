@@ -101,28 +101,14 @@ defmodule Dissolver do
 
     process_options(opts)
     |> process_params(params)
+    |> max_per_page_constraint()
     |> put_total_count(repo, query)
     |> put_total_pages()
-    # |> put_max_count()
-    # |> put_max_page()
-    # |> put_max_per_page()
-    # |> put_page()
+    |> max_page_constraint()
+    |> max_count_constraint()
+    |> page_constraint()
     |> process_query(query)
     |> return_query_results(repo)
-
-    # FIXME: Bug:
-    # max_page should not be greater than totlal pages.
-    # Thus max_page requires total_pages to be calculated first.
-    # If max_page is 0 or greater than total pages then max_page should equal total_pages
-    # options = build_options(opts, params) |> IO.inspect()
-
-    # page = get_page(options, total_pages)
-    # offset = get_offset(total_count, page, options[:per_page])
-
-    # {
-    #   get_items(repo, query, options[:per_page], offset, options[:lazy]),
-
-    # }
   end
 
   defp process_options(opts) do
@@ -153,123 +139,90 @@ defmodule Dissolver do
 
   # TODO: Add total_count as option
   defp process_params(paginator, params) do
-    safe_params =
-      %{
-        page: Map.get(params, :page),
-        per_page: Map.get(params, :per_page)
-      }
-      |> drop_nil()
-
-    Map.merge(paginator, safe_params)
+    paginator
+    |> Map.merge(process_page_param(params))
+    |> Map.merge(process_per_page_param(params))
   end
+
+  defp process_page_param(%{"page" => page}) do
+    %{page: String.to_integer(page)}
+  end
+
+  defp process_page_param(_params), do: %{}
+
+  defp process_per_page_param(%{"per_page" => per_page}) do
+    %{per_page: String.to_integer(per_page)}
+  end
+
+  defp process_per_page_param(_params), do: %{}
 
   # TODO: refactor
   defp put_total_count(paginator, repo, query) do
-    %{paginator | total_count: get_total_count(nil, repo, query)}
+    %{paginator | total_count: get_total_count(repo, query)}
   end
 
-  # TODO: refactor
-  defp put_total_pages(%{total_count: total_count, per_page: per_page} = paginator) do
-    %{paginator | total_pages: get_total_pages(total_count, per_page)}
-  end
-
-  # TODO: refactor
-  defp process_query(%{per_page: per_page} = paginator, query) do
-    offset = get_offset(paginator)
-
-    {
-      paginator,
-      query
-      |> limit(^per_page)
-      |> offset(^offset)
-    }
-  end
-
-  defp return_query_results({%{lazy: false} = paginator, query}, repo) do
-    {repo.all(query), paginator}
-  end
-
-  # Utils ---
-
-  defp drop_nil(%{} = map) do
-    map
-    |> Enum.filter(fn {_, v} -> v end)
-    |> Enum.into(%{})
-  end
-
-  """
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  """
-
-  # defp build_query(query, nil, _): do: query
-  # defp build_query(query, limit, offset) do
-
-  defp get_items(_repo, query, nil, _, true), do: query
-
-  defp get_items(_repo, query, limit, offset, true) do
-    query
-    |> limit(^limit)
-    |> offset(^offset)
-  end
-
-  defp get_items(repo, query, nil, _, false), do: repo.all(query)
-
-  defp get_items(repo, query, limit, offset, false) do
-    query
-    |> limit(^limit)
-    |> offset(^offset)
-    |> repo.all
-  end
-
-  defp get_offset(%{total_pages: total_pages, page: page, per_page: per_page}) do
-    page =
-      case page > total_pages do
-        true -> total_pages
-        _ -> page
-      end
-
-    case page > 0 do
-      true -> (page - 1) * per_page
-      _ -> 0
-    end
-  end
-
-  # This allows the end user to set a value greater than the real total_count.
-  defp get_total_count(count, _repo, _query) when is_integer(count) and count >= 0, do: count
-
-  defp get_total_count(_count, repo, query) do
+  defp get_total_count(repo, query) do
     query
     |> exclude(:preload)
     |> exclude(:order_by)
     |> total_count()
-    # |> (&from(q in &1, select: fragment("count(*)"))).()
     |> repo.one() || 0
   end
 
-  # TODO: This needs a whole refactor.
+  defp put_total_pages(%{total_count: total_count, per_page: per_page} = paginator) do
+    %{paginator | total_pages: get_total_pages(total_count, per_page)}
+  end
+
+  defp get_total_pages(_, nil), do: 1
+
+  defp get_total_pages(count, per_page) do
+    Float.ceil(count / per_page) |> trunc()
+  end
+
+  defp max_per_page_constraint(%{per_page: per_page, max_per_page: nil} = paginator) do
+    %{paginator | max_per_page: per_page}
+  end
+
+  defp max_per_page_constraint(%{per_page: per_page, max_per_page: max_per_page} = paginator)
+       when per_page > max_per_page do
+    %{paginator | per_page: max_per_page}
+  end
+
+  defp max_page_constraint(%{max_page: nil, total_pages: total_pages} = paginator) do
+    %{paginator | max_page: total_pages}
+  end
+
+  defp max_page_constraint(%{max_page: max_page, total_pages: total_pages} = paginator)
+       when max_page > total_pages do
+    %{paginator | max_page: total_pages}
+  end
+
+  defp max_page_constraint(
+         %{
+           per_page: per_page,
+           max_page: max_page,
+           total_pages: total_pages,
+           total_count: total_count
+         } = paginator
+       ) do
+    %{
+      paginator
+      | total_pages: max_page,
+        total_count: max_page * per_page
+    }
+  end
+
+  defp max_page_constraint(paginator), do: paginator
+
+  defp max_count_constraint(%{max_count: nil} = paginator), do: paginator
+
+  defp max_count_constraint(%{total_count: total_count, max_count: max_count} = paginator)
+       when total_count > max_count do
+    %{paginator | total_count: max_count}
+  end
+
+  # TODO: refactor
   # Not of fan of how this is checking if group_by or multi source from.
-  # Maybe this should be its own module?
   # Also the repeated use of total_count as a name bothers me.
 
   defp total_count(query = %{group_bys: [_ | _]}), do: total_row_count(query)
@@ -301,65 +254,48 @@ defmodule Dissolver do
     |> hd
   end
 
-  defp get_total_pages(_, nil), do: 1
+  defp max_count_constraint(paginator), do: paginator
 
-  defp get_total_pages(count, per_page) do
-    Float.ceil(count / per_page) |> trunc()
+  defp page_constraint(%{page: page, max_page: max_page} = paginator) when page > max_page do
+    %{paginator | page: max_page}
   end
 
-  defp build_options(opts, params) do
-    Keyword.merge(opts,
-      page: get_page(params),
-      per_page: get_per_page(opts),
-      params: params,
-      max_page: get_max_page(opts),
-      lazy: get_lazy(opts)
-    )
+  defp page_constraint(paginator), do: paginator
+
+  # TODO: refactor
+  defp process_query(%{per_page: per_page} = paginator, query) do
+    offset = get_offset(paginator)
+
+    {
+      paginator,
+      query
+      |> limit(^per_page)
+      |> offset(^offset)
+    }
   end
 
-  defp get_per_page(opts) do
-    case Keyword.get(opts, :per_page) do
-      nil -> Application.get_env(:dissolver, :per_page, @default[:per_page])
-      per_page -> per_page
-    end
-    |> to_integer()
-  end
+  defp get_offset(%{total_pages: total_pages, page: page, per_page: per_page}) do
+    page =
+      case page > total_pages do
+        true -> total_pages
+        _ -> page
+      end
 
-  # FIXME: I really don't understand this logic.
-  # My assumption is that max page is the limit at which you want some one to travel too.
-  # From this logic is would put you past the max page,
-  # also I don't know why you would allow to come in from params?
-  defp get_page(params, total_pages) do
-    IO.inspect({"get_page/2", params, total_pages})
-
-    case params[:page] > params[:max_page] do
-      true -> total_pages
-      _ -> params[:page]
-    end
-  end
-
-  defp get_page(params) do
-    Map.get(params, "page", @default[:page]) |> to_integer()
-  end
-
-  defp get_max_page(opts) do
-    Keyword.get(opts, :max_page) ||
-      Application.get_env(:dissolver, :max_page, @default[:max_page])
-  end
-
-  defp get_lazy(opts) do
-    Keyword.get(opts, :lazy) ||
-      Application.get_env(:dissolver, :lazy, @default[:lazy])
-  end
-
-  defp to_integer(i) when is_integer(i), do: abs(i)
-
-  defp to_integer(i) when is_binary(i) do
-    case Integer.parse(i) do
-      {n, _} -> n
+    case page > 0 do
+      true -> (page - 1) * per_page
       _ -> 0
     end
   end
 
-  defp to_integer(_), do: @default[:page]
+  defp return_query_results({%{lazy: false} = paginator, query}, repo) do
+    {repo.all(query), paginator}
+  end
+
+  # Utils ---
+
+  defp drop_nil(%{} = map) do
+    map
+    |> Enum.filter(fn {_, v} -> v end)
+    |> Enum.into(%{})
+  end
 end
