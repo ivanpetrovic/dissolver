@@ -215,14 +215,14 @@ defmodule DissolverTest do
       create_products()
       {query, _paginator} = Product |> Dissolver.paginate(%{})
       refute is_list(query)
-      assert is_struct(query)
+      assert is_map(query)
     end
 
     test "paginate/3 can accept :lazy" do
       create_products()
       {query, _paginator} = Product |> Dissolver.paginate(%{}, lazy: true)
       refute is_list(query)
-      assert is_struct(query)
+      assert is_map(query)
     end
   end
 

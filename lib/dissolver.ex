@@ -283,7 +283,7 @@ defmodule Dissolver do
     {repo.all(query), paginator}
   end
 
-  defp return_query_results({%{lazy: true} = paginator, query}, repo) do
+  defp return_query_results({%{lazy: true} = paginator, query}, _repo) do
     {query, paginator}
   end
 
