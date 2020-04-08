@@ -7,26 +7,32 @@ defmodule DissolverTest do
 
   setup do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Dissolver.Repo)
+    on_exit(:clean_config, &clean_config/0)
   end
 
-  defp configure_per_page() do
+  defp configure_per_page(conn) do
     Application.put_env(:dissolver, :per_page, 5)
+    {:ok, conn}
   end
 
-  defp configure_max_per_page() do
+  defp configure_max_per_page(conn) do
     Application.put_env(:dissolver, :max_per_page, 7)
+    {:ok, conn}
   end
 
-  defp configure_max_page() do
+  defp configure_max_page(conn) do
     Application.put_env(:dissolver, :max_page, 4)
+    {:ok, conn}
   end
 
-  defp configure_max_count() do
+  defp configure_max_count(conn) do
     Application.put_env(:dissolver, :max_count, 20)
+    {:ok, conn}
   end
 
-  defp configure_lazy() do
+  defp configure_lazy(conn) do
     Application.put_env(:dissolver, :lazy, true)
+    {:ok, conn}
   end
 
   defp clean_config do
@@ -58,7 +64,7 @@ defmodule DissolverTest do
 
   describe "defaults" do
     test "paginate/3 should default sensability" do
-      clean_config()
+      create_products()
       {items, paginator} = Product |> Dissolver.paginate(%{})
 
       assert paginator.per_page == 20
@@ -74,19 +80,16 @@ defmodule DissolverTest do
   end
 
   describe ":per_page" do
-    test "paginate/3 can configure :per_page" do
-      Application.put_env(:dissolver, :per_page, 5)
-      IO.inspect({"paginate/3 can configure :per_page", get_env()})
+    setup [:configure_per_page]
 
+    test "paginate/3 can configure :per_page" do
       create_products()
       {_items, paginator} = Product |> Dissolver.paginate(%{})
       assert paginator.per_page == 5
       assert paginator.total_pages == 6
-      clean_config()
     end
 
     test "paginate/3 can accept :per_page" do
-      Application.put_env(:dissolver, :per_page, 5)
       create_products()
       {items, paginator} = Product |> Dissolver.paginate(%{}, per_page: 7)
       items = items |> Enum.sort_by(& &1.id) |> Enum.map(& &1.name)
@@ -96,13 +99,9 @@ defmodule DissolverTest do
       assert paginator.total_count == 30
       assert paginator.total_pages == 5
       assert items == for(i <- 1..7, do: "Product #{i}")
-      clean_config()
     end
 
     test "paginate/3 :per_page can come from params" do
-      Application.put_env(:dissolver, :per_page, 5)
-      IO.inspect({"paginate/3 :per_page can come from params", get_env()})
-
       create_products()
       {items, paginator} = Product |> Dissolver.paginate(%{"per_page" => "7"})
       items = items |> Enum.sort_by(& &1.id) |> Enum.map(& &1.name)
@@ -112,13 +111,13 @@ defmodule DissolverTest do
       assert paginator.total_count == 30
       assert paginator.total_pages == 5
       assert items == for(i <- 1..7, do: "Product #{i}")
-      clean_config()
     end
   end
 
   describe ":max_per_page" do
+    setup [:configure_max_per_page]
+
     test "paginate/3 can configure :max_per_page" do
-      Application.put_env(:dissolver, :max_per_page, 7)
       create_products()
       {items, paginator} = Product |> Dissolver.paginate(%{"per_page" => "10"})
 
@@ -126,15 +125,13 @@ defmodule DissolverTest do
       assert paginator.per_page == 7
       assert paginator.page == 1
       assert paginator.total_count == 30
-      assert paginator.total_pages == 5
+      assert paginator.total_pages == 4
 
       items = items |> Enum.sort_by(& &1.id) |> Enum.map(& &1.name)
       assert items == for(i <- 1..7, do: "Product #{i}")
-      clean_config()
     end
 
     test "paginate/3 can accept :max_per_page" do
-      Application.put_env(:dissolver, :max_per_page, 7)
       create_products()
       {items, paginator} = Product |> Dissolver.paginate(%{}, max_per_page: 6)
 
@@ -146,11 +143,9 @@ defmodule DissolverTest do
 
       items = items |> Enum.sort_by(& &1.id) |> Enum.map(& &1.name)
       assert items == for(i <- 1..6, do: "Product #{i}")
-      clean_config()
     end
 
     test "paginate/3 can constrain :max_per_page" do
-      Application.put_env(:dissolver, :max_per_page, 7)
       create_products()
       {items, paginator} = Product |> Dissolver.paginate(%{"per_page" => "10"}, max_per_page: 6)
 
@@ -162,26 +157,23 @@ defmodule DissolverTest do
 
       items = items |> Enum.sort_by(& &1.id) |> Enum.map(& &1.name)
       assert items == for(i <- 1..6, do: "Product #{i}")
-      clean_config()
     end
   end
 
   describe ":max_page" do
+    setup [:configure_max_page]
+
     test "paginate/3 can configure :max_page" do
-      Application.put_env(:dissolver, :max_page, 4)
       create_products()
       {_items, paginator} = Product |> Dissolver.paginate(%{}, per_page: 10)
       assert paginator.per_page == 10
       assert paginator.page == 1
       assert paginator.max_page == 3
-      assert paginator.total_pages == 2
-      assert paginator.total_count == 20
-
-      clean_config()
+      assert paginator.total_pages == 3
+      assert paginator.total_count == 30
     end
 
     test "paginate/3 can accept :max_page" do
-      Application.put_env(:dissolver, :max_page, 4)
       create_products()
 
       {items, paginator} =
@@ -195,46 +187,43 @@ defmodule DissolverTest do
 
       items = items |> Enum.sort_by(& &1.id) |> Enum.map(& &1.name)
       assert items == for(i <- 11..20, do: "Product #{i}")
-      clean_config()
     end
   end
 
   describe ":max_count" do
+    setup [:configure_max_count]
+
     test "paginate/3 can configure :max_count" do
-      Application.put_env(:dissolver, :max_count, nil)
       create_products()
       {_items, paginator} = Product |> Dissolver.paginate(%{})
 
       assert paginator.total_count == 20
-      on_exit(:clean_config, &clean_config/0)
     end
 
     test "paginate/3 can accept :max_count" do
-      Application.put_env(:dissolver, :max_count, nil)
       create_products()
       {_items, paginator} = Product |> Dissolver.paginate(%{}, max_count: 20)
 
       assert paginator.max_count == 20
       assert paginator.total_count == 20
-      clean_config()
     end
   end
 
   describe ":lazy" do
+    setup [:configure_lazy]
+
     test "paginate/3 can configure :lazy" do
-      Application.put_env(:dissolver, :lazy, true)
       create_products()
       {query, paginator} = Product |> Dissolver.paginate(%{})
-      assert query == nil
-      clean_config()
+      refute is_list(query)
+      assert is_struct(query)
     end
 
     test "paginate/3 can accept :lazy" do
-      Application.put_env(:dissolver, :lazy, true)
       create_products()
       {query, paginator} = Product |> Dissolver.paginate(%{}, lazy: true)
-      assert query == nil
-      clean_config()
+      refute is_list(query)
+      assert is_struct(query)
     end
   end
 

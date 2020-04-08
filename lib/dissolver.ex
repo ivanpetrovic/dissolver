@@ -166,7 +166,7 @@ defmodule Dissolver do
     |> exclude(:preload)
     |> exclude(:order_by)
     |> total_count()
-    |> repo.one() || 0
+    |> repo.one()
   end
 
   defp put_total_pages(%{total_count: total_count, per_page: per_page} = paginator) do
@@ -183,9 +183,15 @@ defmodule Dissolver do
     %{paginator | max_per_page: per_page}
   end
 
-  defp max_per_page_constraint(%{per_page: per_page, max_per_page: max_per_page} = paginator)
+  defp max_per_page_constraint(
+         %{total_count: total_count, per_page: per_page, max_per_page: max_per_page} = paginator
+       )
        when per_page > max_per_page do
-    %{paginator | per_page: max_per_page}
+    %{
+      paginator
+      | per_page: max_per_page,
+        total_pages: (total_count / max_per_page) |> trunc |> abs
+    }
   end
 
   defp max_per_page_constraint(paginator), do: paginator
@@ -195,7 +201,8 @@ defmodule Dissolver do
   end
 
   defp max_page_constraint(%{max_page: max_page, total_pages: total_pages} = paginator)
-       when max_page > total_pages do
+       when max_page >
+              total_pages do
     %{paginator | max_page: total_pages}
   end
 
@@ -222,6 +229,8 @@ defmodule Dissolver do
        when total_count > max_count do
     %{paginator | total_count: max_count}
   end
+
+  defp max_count_constraint(paginator), do: paginator
 
   # TODO: refactor
   # Not of fan of how this is checking if group_by or multi source from.
@@ -256,8 +265,6 @@ defmodule Dissolver do
     |> hd
   end
 
-  defp max_count_constraint(paginator), do: paginator
-
   defp page_constraint(%{page: page, max_page: max_page} = paginator) when page > max_page do
     %{paginator | page: max_page}
   end
@@ -291,6 +298,10 @@ defmodule Dissolver do
 
   defp return_query_results({%{lazy: false} = paginator, query}, repo) do
     {repo.all(query), paginator}
+  end
+
+  defp return_query_results({%{lazy: true} = paginator, query}, repo) do
+    {query, paginator}
   end
 
   # Utils ---
