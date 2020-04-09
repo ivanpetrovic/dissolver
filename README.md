@@ -101,7 +101,7 @@ This module uses the following that can be set as globals in your `config/config
     * `Dissolver.HTML.Semantic` - [A Semantic UI theme](https://semantic-ui.com/)
     * `Dissolver.HTML.Tailwind` - [A Tailwind CSS theme](https://tailwindcss.com/)
 
-* `:per_page` (default: 10) - The global per page setting
+* `:per_page` (default: 20) - The global per page setting
 * `:max_page` - The limit of pages allow to navigate regardless of total pages found
     This option is ignored if not provided and defaults to total pages found in the query.
 * `:lazy` (default: false) - This option if enabled will result in all `Dissolver.paginate/3` calls
