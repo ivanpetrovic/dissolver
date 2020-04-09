@@ -5,8 +5,8 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.21.3">
-    <meta name="project" content="Dissolver v0.9.1">
-    <title>Dissolver.JSON — Dissolver v0.9.1</title>
+    <meta name="project" content="Dissolver v0.9.3">
+    <title>Dissolver.JSON — Dissolver v0.9.3</title>
     <link rel="stylesheet" href="dist/elixir-0ab8a6a80ebaaa287431.css" />
     <script src="dist/sidebar_items-d596a6c3f8.js"></script>
       <script src="docs_config.js"></script>
@@ -43,7 +43,7 @@
       <a href="Dissolver.html" class="sidebar-projectName">
 Dissolver      </a>
       <h2 class="sidebar-projectVersion">
-        v0.9.1
+        v0.9.3
       </h2>
     </div>
   </div>
@@ -63,8 +63,8 @@ Dissolver      </a>
     <div id="content" class="content-inner">
 
       <h1>
-        <small class="app-vsn">Dissolver v0.9.1</small>
-Dissolver.JSON          <a href="https://github.com/MorphicPro/dissolver/blob/v0.9.1/lib/dissolver/json.ex#L1" title="View Source" class="view-source" rel="help">
+        <small class="app-vsn">Dissolver v0.9.3</small>
+Dissolver.JSON          <a href="https://github.com/MorphicPro/dissolver/blob/v0.9.3/lib/dissolver/json.ex#L1" title="View Source" class="view-source" rel="help">
             <span class="icon-code" aria-hidden="true"></span>
             <span class="sr-only">View Source</span>
           </a>
@@ -74,15 +74,15 @@ Dissolver.JSON          <a href="https://github.com/MorphicPro/dissolver/blob/v0
         <section id="moduledoc">
 <p>JSON helpers to render the pagination links in json format.
 import the <a href="#content"><code class="inline">Dissolver.JSON</code></a> in your view module.</p>
-<pre><code class="nohighlight makeup elixir"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.ProductView</span><span class="w"> </span><span class="k" data-group-id="8757232182-1">do</span><span class="w">
+<pre><code class="nohighlight makeup elixir"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.ProductView</span><span class="w"> </span><span class="k" data-group-id="9159778076-1">do</span><span class="w">
   </span><span class="kn">use</span><span class="w"> </span><span class="nc">MyApp.Web</span><span class="p">,</span><span class="w"> </span><span class="ss">:view</span><span class="w">
   </span><span class="kn">import</span><span class="w"> </span><span class="nc">Dissolver.JSON</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">render</span><span class="p" data-group-id="8757232182-2">(</span><span class="s">&quot;index.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8757232182-3">%{</span><span class="ss">conn</span><span class="p">:</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="ss">products</span><span class="p">:</span><span class="w"> </span><span class="n">products</span><span class="p">,</span><span class="w"> </span><span class="ss">dissolver</span><span class="p">:</span><span class="w"> </span><span class="n">dissolver</span><span class="p" data-group-id="8757232182-3">}</span><span class="p" data-group-id="8757232182-2">)</span><span class="w"> </span><span class="k" data-group-id="8757232182-4">do</span><span class="w">
-    </span><span class="p" data-group-id="8757232182-5">%{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="n">render_many</span><span class="p" data-group-id="8757232182-6">(</span><span class="n">products</span><span class="p">,</span><span class="w"> </span><span class="nc">MyApp.ProductView</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;product.json&quot;</span><span class="p" data-group-id="8757232182-6">)</span><span class="p">,</span><span class="w">
-      </span><span class="ss">pagination</span><span class="p">:</span><span class="w"> </span><span class="n">paginate</span><span class="p" data-group-id="8757232182-7">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">dissolver</span><span class="p" data-group-id="8757232182-7">)</span><span class="p" data-group-id="8757232182-5">}</span><span class="w">
-  </span><span class="k" data-group-id="8757232182-4">end</span><span class="w">
-</span><span class="k" data-group-id="8757232182-1">end</span></code></pre>
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">render</span><span class="p" data-group-id="9159778076-2">(</span><span class="s">&quot;index.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9159778076-3">%{</span><span class="ss">conn</span><span class="p">:</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="ss">products</span><span class="p">:</span><span class="w"> </span><span class="n">products</span><span class="p">,</span><span class="w"> </span><span class="ss">dissolver</span><span class="p">:</span><span class="w"> </span><span class="n">dissolver</span><span class="p" data-group-id="9159778076-3">}</span><span class="p" data-group-id="9159778076-2">)</span><span class="w"> </span><span class="k" data-group-id="9159778076-4">do</span><span class="w">
+    </span><span class="p" data-group-id="9159778076-5">%{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="n">render_many</span><span class="p" data-group-id="9159778076-6">(</span><span class="n">products</span><span class="p">,</span><span class="w"> </span><span class="nc">MyApp.ProductView</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;product.json&quot;</span><span class="p" data-group-id="9159778076-6">)</span><span class="p">,</span><span class="w">
+      </span><span class="ss">pagination</span><span class="p">:</span><span class="w"> </span><span class="n">paginate</span><span class="p" data-group-id="9159778076-7">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">dissolver</span><span class="p" data-group-id="9159778076-7">)</span><span class="p" data-group-id="9159778076-5">}</span><span class="w">
+  </span><span class="k" data-group-id="9159778076-4">end</span><span class="w">
+</span><span class="k" data-group-id="9159778076-1">end</span></code></pre>
 <p>Where <code class="inline">dissolver</code> is a <code class="inline">%Dissolver{}</code> struct returned from <a href="Dissolver.html#paginate/2"><code class="inline">Dissolver.paginate/2</code></a>.</p>
 <p><code class="inline">paginate</code> helper takes keyword list of <code class="inline">options</code>.
   paginate(dissolver, window: 5, next_label: &quot;&gt;&gt;&quot;, previous_label: &quot;&lt;&lt;&quot;, first: true, last: true, first_label: &quot;First&quot;, last_label: &quot;Last&quot;)</p>
@@ -129,7 +129,7 @@ Functions          </h1>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">paginate(conn, paginator, opts \\ [])</h1>
-      <a href="https://github.com/MorphicPro/dissolver/blob/v0.9.1/lib/dissolver/json.ex#L25" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/MorphicPro/dissolver/blob/v0.9.3/lib/dissolver/json.ex#L25" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -144,7 +144,7 @@ Functions          </h1>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">render_page_list(page_list)</h1>
-      <a href="https://github.com/MorphicPro/dissolver/blob/v0.9.1/lib/dissolver/json.ex#L32" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/MorphicPro/dissolver/blob/v0.9.3/lib/dissolver/json.ex#L32" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
