@@ -17,7 +17,7 @@ defmodule Dissolver.Paginator do
             page: 1,
             total_pages: nil,
             total_count: nil,
-            params: [],
+            params: %{},
             lazy: false,
             theme: Dissolver.HTML.Simple
 
@@ -52,7 +52,7 @@ defmodule Dissolver.Paginator do
   def paginate(%Plug.Conn{} = conn, %Paginator{} = paginator, opts \\ []) do
     page = paginator.page
     total_pages = paginator.total_pages
-    params = build_params(paginator.params, opts[:params])
+    params = build_params(paginator.params, opts[:params]) |> IO.inspect()
 
     page
     |> previous_page

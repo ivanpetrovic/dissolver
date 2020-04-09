@@ -61,6 +61,7 @@ defmodule DissolverTest do
       assert paginator.total_count == 30
       assert paginator.total_pages == 2
       assert paginator.theme == Dissolver.HTML.Simple
+      assert paginator.params == %{}
 
       items = items |> Enum.sort_by(& &1.id) |> Enum.map(& &1.name)
       assert items == for(i <- 1..20, do: "Product #{i}")

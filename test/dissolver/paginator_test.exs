@@ -6,11 +6,11 @@ defmodule Dissolver.PaginatorTest do
   # import Dissolver.Paginator
 
   # TODO: Replace test
-  # test "next page only if there are more pages" do
-  #   assert next_page([], 10, 10) == []
-  #   assert next_page([{:previous, 9}], 10, 10) == [{:previous, 9}]
-  #   assert next_page([], 10, 12) == [{:next, 11}]
-  # end
+  test "next page only if there are more pages" do
+    # assert next_page([], 10, 10) == []
+    # assert next_page([{:previous, 9}], 10, 10) == [{:previous, 9}]
+    # assert next_page([], 10, 12) == [{:next, 11}]
+  end
 
   # TODO: Replace test
   # test "generate previous page unless first" do
