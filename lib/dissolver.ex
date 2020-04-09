@@ -128,6 +128,7 @@ defmodule Dissolver do
         max_per_page: Keyword.get(opts, :max_per_page),
         max_page: Keyword.get(opts, :max_page),
         max_count: Keyword.get(opts, :max_count),
+        total_count: Keyword.get(opts, :total_count),
         lazy: Keyword.get(opts, :lazy)
       }
       |> drop_nil()
@@ -157,8 +158,12 @@ defmodule Dissolver do
   defp process_per_page_param(_params), do: %{}
 
   # TODO: refactor
-  defp put_total_count(paginator, repo, query) do
+  defp put_total_count(%{total_count: nil} = paginator, repo, query) do
     %{paginator | total_count: get_total_count(repo, query)}
+  end
+
+  defp put_total_count(%{total_count: total_count} = paginator, _repo, _query) do
+    %{paginator | total_count: total_count}
   end
 
   defp get_total_count(repo, query) do
