@@ -237,8 +237,8 @@ defmodule Dissolver do
   # Not of fan of how this is checking if group_by or multi source from.
   # Also the repeated use of total_count as a name bothers me.
 
-  defp total_count(query = %{group_bys: [_ | _]}), do: total_row_count(query)
-  defp total_count(query = %{from: %{source: {_, nil}}}), do: total_row_count(query)
+  defp total_count(%{group_bys: [_ | _]} = query), do: total_row_count(query)
+  defp total_count(%{from: %{source: {_, nil}}} = query), do: total_row_count(query)
 
   defp total_count(query) do
     primary_key = get_primary_key(query)

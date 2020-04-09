@@ -227,6 +227,12 @@ defmodule DissolverTest do
     end
   end
 
+  test "paginate/3 can accept :total_count" do
+    create_products()
+    {_items, %{total_count: total_count}} = Product |> Dissolver.paginate(%{}, total_count: 10)
+    assert total_count == 10
+  end
+
   test "non schema based queries" do
     clean_config()
     create_products()

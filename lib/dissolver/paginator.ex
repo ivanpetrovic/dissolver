@@ -52,7 +52,7 @@ defmodule Dissolver.Paginator do
   def paginate(%Plug.Conn{} = conn, %Paginator{} = paginator, opts \\ []) do
     page = paginator.page
     total_pages = paginator.total_pages
-    params = build_params(paginator.params, opts[:params]) |> IO.inspect()
+    params = build_params(paginator.params, opts[:params])
 
     page
     |> previous_page

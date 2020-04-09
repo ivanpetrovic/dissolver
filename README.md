@@ -1,5 +1,5 @@
 # Dissolver
-### NOTE: This is a wip repo. It's not currently in working order and has many bugs. 
+### NOTE: This is a wip repo. So be warned there maybe be bugs. 
 
 This project is a fork of https://github.com/elixirdrops/kerosene.   
 I thought to take it over because it does not look as if its being activly developed
@@ -107,9 +107,8 @@ This module uses the following that can be set as globals in your `config/config
 * `:lazy` (default: false) - This option if enabled will result in all `Dissolver.paginate/3` calls
     return an Ecto.Query rather than call Repo.all. This is useful for when you need to paginate
     on an association via a preload. TODO: provide example.
-##
-
-Building apis or SPA's, no problem Dissolver has support for Json.
+    
+## JSON API Support.
 
 ```elixir
 defmodule MyApp.ProductView do
@@ -127,6 +126,46 @@ defmodule MyApp.ProductView do
       description: product.description,
       price: product.price}
   end
+end
+```
+
+## Lazy Example. 
+
+Say you have a tag that has many posts and you want to paginate the post as they relate to a given tag. 
+
+Heres an example of using the lazy option so that Dissolver.paginate returns a query rather than a result. 
+
+```elixir
+def get_post_for_tag!(tag_name, params \\ %{}) do
+    total_count =
+      from(t in "tags",
+        join: pt in "post_tags",
+        on: pt.tag_id == t.id,
+        where: t.name == ^tag_name,
+        select: count()
+      )
+      |> Repo.one()
+
+    {posts_query, paginator} =
+      from(p in Post, order_by: [desc: :inserted_at], preload: [:tags])
+      |> Dissolver.paginate(params, total_count: total_count, lazy: true)
+
+    tag =
+      from(t in Tag, where: t.name == ^tag_name, preload: [posts: ^posts_query])
+      |> Repo.one!()
+
+    {tag, paginator}
+  end
+```
+
+You will notice that in this case I also have to supply total_count since Dissolver.paginate does not currently have a way to scope total_count of a given tag since they query is applied after Dissolver.paginate was called. So for this use case we just supply the total count up front. 
+
+For my controller it looks just like most.
+
+```elixir
+def show_post(conn, %{"tag" => tag} = params) do
+  {tag, paginator} = Blog.get_post_for_tag!(tag, params)
+  render(conn, "show_posts.html", tag: tag, paginator: paginator)
 end
 ```
 
