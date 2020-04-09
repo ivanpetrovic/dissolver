@@ -45,8 +45,10 @@ defmodule Dissolver.Paginator do
     last_label: "Last"
   ]
 
+  # FIXME: The way build_params works is a mess.
+  # Needs to be cleaned up in both JSON/HTML and here.
+
   @doc """
-  TODO:
   """
   @spec paginate(Plug.Conn.t(), t(), nil | maybe_improper_list | map) :: list()
   def paginate(%Plug.Conn{} = conn, %Paginator{} = paginator, opts \\ []) do
@@ -143,7 +145,7 @@ defmodule Dissolver.Paginator do
   end
 
   defp build_params(params, params2) do
-    Map.merge(params, params2) |> normalize_keys()
+    Map.merge(params, params2 || %{}) |> normalize_keys()
   end
 
   defp normalize_keys(params) when is_map(params) do

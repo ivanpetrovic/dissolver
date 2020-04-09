@@ -1,21 +1,109 @@
 defmodule Dissolver.PaginatorTest do
   use ExUnit.Case
+  use Phoenix.ConnTest, only: [:build_conn, 0]
+  alias Ecto.Adapters.SQL.Sandbox
+  alias Dissolver.{Repo, Paginator}
 
   # TODO: spec out Paginator per its open interface. No need to expose private functions
 
   # import Dissolver.Paginator
 
   # TODO: Replace test
-  test "next page only if there are more pages" do
-    # assert next_page([], 10, 10) == []
-    # assert next_page([{:previous, 9}], 10, 10) == [{:previous, 9}]
-    # assert next_page([], 10, 12) == [{:next, 11}]
+
+  setup tags do
+    :ok = Sandbox.checkout(Repo)
+
+    unless tags[:async] do
+      Sandbox.mode(Repo, {:shared, self()})
+    end
+
+    {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 
-  # TODO: Replace test
-  # test "generate previous page unless first" do
-  #   assert previous_page(0) == []
-  #   assert previous_page(10) == [{:previous, 9}]
+  test "next page only if there are more pages", %{conn: conn} do
+    paginator = %{
+      %Paginator{}
+      | total_count: 40,
+        total_pages: 4,
+        per_page: 10,
+        page: 1
+    }
+
+    assert Paginator.paginate(conn, paginator, next_label: "next") == [
+             {"next", 2, "/?page=2", false}
+           ]
+
+    paginator = %{
+      %Paginator{}
+      | total_count: 40,
+        total_pages: 4,
+        per_page: 10,
+        page: 4
+    }
+
+    assert Paginator.paginate(conn, paginator, next_label: "next") == [
+             {nil, 3, "/?page=3", false}
+           ]
+
+    paginator = %{
+      %Paginator{}
+      | total_count: 10,
+        total_pages: 1,
+        per_page: 10,
+        page: 1
+    }
+
+    assert Paginator.paginate(conn, paginator) == []
+  end
+
+  test "generate previous page unless first", %{conn: conn} do
+    paginator = %{
+      %Paginator{}
+      | total_count: 40,
+        total_pages: 4,
+        per_page: 10,
+        page: 4
+    }
+
+    assert Paginator.paginate(conn, paginator, previous_label: "previous") == [
+             {"previous", 3, "/?page=3", false}
+           ]
+
+    paginator = %{
+      %Paginator{}
+      | total_count: 40,
+        total_pages: 4,
+        per_page: 10,
+        page: 1
+    }
+
+    assert Paginator.paginate(conn, paginator, previous_label: "previous") == [
+             {nil, 2, "/?page=2", false}
+           ]
+
+    paginator = %{
+      %Paginator{}
+      | total_count: 10,
+        total_pages: 1,
+        per_page: 10,
+        page: 1
+    }
+
+    assert Paginator.paginate(conn, paginator) == []
+  end
+
+  # TODO: fix how build params are using in HTML/JSON
+
+  # test "generate first page", %{conn: conn} do
+  #   paginator = %{
+  #     %Paginator{}
+  #     | total_count: 100,
+  #       total_pages: 10,
+  #       per_page: 10,
+  #       page: 9
+  #   }
+
+  #   assert Paginator.paginate(conn, paginator, first_label: "first") == []
   # end
 
   # TODO: Replace test

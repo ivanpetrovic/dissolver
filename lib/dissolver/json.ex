@@ -10,17 +10,17 @@ defmodule Dissolver.JSON do
         use MyApp.Web, :view
         import Dissolver.JSON
 
-        def render("index.json", %{conn: conn, products: products, dissolver: dissolver}) do
+        def render("index.json", %{conn: conn, products: products, paginator: paginator}) do
           %{data: render_many(products, MyApp.ProductView, "product.json"),
-            pagination: paginate(conn, dissolver)}
+            pagination: paginate(conn, paginator)}
         end
       end
 
 
-  Where `dissolver` is a `%Dissolver{}` struct returned from `Dissolver.paginate/2`.
+  Where `paginator` is a `%Dissolver.Paginator{}` struct returned from `Dissolver.paginate/2`.
 
   `paginate` helper takes keyword list of `options`.
-    paginate(dissolver, window: 5, next_label: ">>", previous_label: "<<", first: true, last: true, first_label: "First", last_label: "Last")
+    paginate(paginator, window: 5, next_label: ">>", previous_label: "<<", first: true, last: true, first_label: "First", last_label: "Last")
   """
   def paginate(conn, paginator, opts \\ []) do
     opts = build_options(opts)

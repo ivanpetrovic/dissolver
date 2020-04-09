@@ -38,9 +38,8 @@ defmodule DissolverTest do
   defp clean_config do
     Application.put_env(:dissolver, :per_page, nil)
     Application.put_env(:dissolver, :max_per_page, nil)
-    Application.put_env(:dissolver, :max_per, nil)
-    Application.put_env(:dissolver, :max_count, nil)
     Application.put_env(:dissolver, :max_page, nil)
+    Application.put_env(:dissolver, :max_count, nil)
     Application.put_env(:dissolver, :lazy, nil)
   end
 

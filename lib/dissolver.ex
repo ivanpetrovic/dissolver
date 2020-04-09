@@ -83,11 +83,14 @@ defmodule Dissolver do
       * `Dissolver.HTML.Tailwind` - [A Tailwind CSS theme](https://tailwindcss.com/)
 
   * `:per_page` (default: 20) - The global per page setting
+  * `:max_per_page` - The max value for `:per_page`, if nil this will default to `:per_page`
   * `:max_page` - The limit of pages allow to navigate regardless of total pages found
       This option is ignored if not provided and defaults to total pages found in the query.
+  * `:max_count` - The max limit of total items that will looked up
   * `:lazy` (default: false) - This option if enabled will result in all `Dissolver.paginate/3` calls
       return an Ecto.Query rather than call Repo.all. This is useful for when you need to paginate
       on an association via a preload. TODO: provide example.
+      Note you will also want to pass the `:total_count` option while using lazy.
   ##
   """
 

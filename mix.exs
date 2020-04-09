@@ -57,6 +57,7 @@ defmodule Dissolver.Mixfile do
       {:postgrex, "~> 0.15", only: [:test]},
       {:credo, "~> 1.3", only: [:test]},
       {:excoveralls, "~> 0.12", only: [:test]},
+      {:phoenix, "~> 1.4.16", only: [:test]},
       # Docs dependencies
       {:earmark, "~> 1.4", only: :docs},
       {:ex_doc, "~> 0.21", only: :docs},
