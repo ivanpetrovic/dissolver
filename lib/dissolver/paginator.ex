@@ -67,6 +67,29 @@ defmodule Dissolver.Paginator do
     end)
   end
 
+  def paginate(
+        socket,
+        %Paginator{} = paginator,
+        router_helper,
+        action,
+        opts \\ []
+      ) do
+    page = paginator.page
+    total_pages = paginator.total_pages
+    params = build_params(paginator.params, opts[:params])
+
+    page
+    |> previous_page
+    |> first_page(page, opts[:window], opts[:first])
+    |> page_list(page, total_pages, opts[:window], opts[:range])
+    |> next_page(page, total_pages)
+    |> last_page(page, total_pages, opts[:window], opts[:last])
+    |> Enum.map(fn {l, p} ->
+      {label_text(l, opts), p, router_helper.(socket, action, Map.put(params, "page", p)),
+       page == p}
+    end)
+  end
+
   @doc """
 
   """

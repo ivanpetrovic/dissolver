@@ -45,6 +45,13 @@ defmodule Dissolver.HTML do
       Dissolver.HTML.paginate(@conn, @dissolver, theme: :boostrap4, class: "paginate-sm")
   """
 
+  def paginate(socket, paginator, route_helper, action, opts \\ []) do
+    opts = Paginator.build_options(opts)
+
+    Paginator.paginate(socket, paginator, route_helper, action, opts)
+    |> render_page_list(opts)
+  end
+
   def paginate(conn, paginator, opts \\ []) do
     opts = Paginator.build_options(opts)
 
