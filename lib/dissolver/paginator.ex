@@ -51,7 +51,9 @@ defmodule Dissolver.Paginator do
   @doc """
   """
   @spec paginate(Plug.Conn.t(), t(), nil | maybe_improper_list | map) :: list()
-  def paginate(%Plug.Conn{} = conn, %Paginator{} = paginator, opts \\ []) do
+  def paginate(_, _, opts \\ [])
+
+  def paginate(%Plug.Conn{} = conn, %Paginator{} = paginator, opts) do
     page = paginator.page
     total_pages = paginator.total_pages
     params = build_params(paginator.params, opts[:params])
@@ -68,11 +70,9 @@ defmodule Dissolver.Paginator do
   end
 
   def paginate(
-        socket,
         %Paginator{} = paginator,
         router_helper,
-        action,
-        opts \\ []
+        opts
       ) do
     page = paginator.page
     total_pages = paginator.total_pages
@@ -85,8 +85,7 @@ defmodule Dissolver.Paginator do
     |> next_page(page, total_pages)
     |> last_page(page, total_pages, opts[:window], opts[:last])
     |> Enum.map(fn {l, p} ->
-      {label_text(l, opts), p, router_helper.(socket, action, Map.put(params, "page", p)),
-       page == p}
+      {label_text(l, opts), p, router_helper.(Map.put(params, "page", p)), page == p}
     end)
   end
 
