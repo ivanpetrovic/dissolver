@@ -1,3 +1,8 @@
+## v0.9.4 (2020-06-21)
+* Bugfix #4 zero count
+* Publish to hex.pm
+* Update README.md
+
 ## v0.9.2 (2020-04-08)
 * Refactor config/options 
 

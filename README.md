@@ -5,16 +5,12 @@ This project is a fork of https://github.com/elixirdrops/kerosene.
 I thought to take it over because it does not look as if its being activly developed
 and I wanted more features.
 
-My hope is to refactor the code and tests to better the over all code quality as well as offer some needed features. 
-
-The two main new features are:
-* Lazy query - Instead of pagination calling Repo.all it will return an Ecto query. This is useful for subqueries where you will passying the query to something like a preload.
-* Custom themes - Now you can pass a module as the source of your theme. 
-
-Pending Issues I'd like to address:
-* Many of the functions are public for the sake of testing. I would like refactor all the test so that the modules only exposed required interfaces. 
-* The way this lib queries for total counts is a bit odd since it's trying to account for groub_by and multi sourced froms. I'm going to see if we can't make this cleaner. 
-* The over all namespace of functions are in need of help. I will be refactoring a considerable amount of the functions. 
+TODO: 
+- [x] Lazy query - Instead of pagination calling Repo.all it will return an Ecto query. This is useful for subqueries where you will passying the query to something like a preload.
+- [x] Custom themes - Now you can pass a module as the source of your theme. 
+- [ ] Refactor all the test so that the modules only exposed required interfaces. 
+- [ ] The way this lib queries for total counts is a bit odd since it's trying to account for groub_by and multi sourced froms. I'm going to see if we can't make this cleaner. 
+- [ ] Refactor namespace of functions. General clean up of internal methods.  
 
 --- 
 
@@ -22,14 +18,12 @@ Pending Issues I'd like to address:
 
 Pagination for Ecto and Phoenix.
 
-Dissolver was forked of the fine work [kerosene](https://github.com/elixirdrops/kerosene)
-
 ## Installation
 add Dissolver to your mix.exs dependencies:
 ```elixir
 def deps do
   [
-    {:dissolver, github: 'MorphicPro/dissolver'}
+    {:dissolver, "~> 0.9.4"}
   ]
 end
 ```

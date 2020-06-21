@@ -1,6 +1,6 @@
 defmodule Dissolver.Mixfile do
   use Mix.Project
-  @version "0.9.3"
+  @version "0.9.4"
 
   def project do
     [
@@ -23,7 +23,7 @@ defmodule Dissolver.Mixfile do
       description: """
       Pagination for Ecto and Phoenix.
       """,
-      preferred_cli_env: [credo: :test, "coveralls.html": :test, "gen.docs": :docs],
+      preferred_cli_env: [credo: :test, "coveralls.html": :test],
       test_coverage: [tool: ExCoveralls]
     ]
   end
@@ -59,8 +59,8 @@ defmodule Dissolver.Mixfile do
       {:excoveralls, "~> 0.12", only: [:test]},
       {:phoenix, "~> 1.4.16", only: [:test]},
       # Docs dependencies
-      {:earmark, "~> 1.4", only: :docs},
-      {:ex_doc, "~> 0.21", only: :docs},
+      {:earmark, "~> 1.4", [env: :prod, repo: "hexpm", hex: "earmark"]},
+      {:ex_doc, "~> 0.21", only: :dev, runtime: false},
       {:inch_ex, "~> 2.0", only: :docs}
     ]
   end
@@ -86,8 +86,7 @@ defmodule Dissolver.Mixfile do
     [
       "ecto.setup": ["ecto.create --quiet", "ecto.migrate"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.setup", "test"],
-      "gen.docs": ["docs -o docs"]
+      test: ["ecto.setup", "test"]
     ]
   end
 end

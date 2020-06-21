@@ -8,4 +8,5 @@ erl_crash.dump
 tags
 .elixir_ls
 /cover
+/doc
 /docs
