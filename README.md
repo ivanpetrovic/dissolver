@@ -3,15 +3,15 @@
 
 This project is a fork of https://github.com/elixirdrops/kerosene.   
 I thought to take it over because it does not look as if its being activly developed
-and I think there is some more work needed before it's a release canidate.
+and I wanted more features.
 
 My hope is to refactor the code and tests to better the over all code quality as well as offer some needed features. 
 
-The two first new features will include:
-* Lazy query - Instead of pagination calling Repo.all it will return an Ecto query. This is useful for subqueries where you will passying the query to something like a preload. 
+The two main new features are:
+* Lazy query - Instead of pagination calling Repo.all it will return an Ecto query. This is useful for subqueries where you will passying the query to something like a preload.
 * Custom themes - Now you can pass a module as the source of your theme. 
 
-Issues I' like to address:
+Pending Issues I'd like to address:
 * Many of the functions are public for the sake of testing. I would like refactor all the test so that the modules only exposed required interfaces. 
 * The way this lib queries for total counts is a bit odd since it's trying to account for groub_by and multi sourced froms. I'm going to see if we can't make this cleaner. 
 * The over all namespace of functions are in need of help. I will be refactoring a considerable amount of the functions. 
@@ -22,11 +22,7 @@ Issues I' like to address:
 
 Pagination for Ecto and Phoenix.
 
-Dissolver is the continuation and fork of the fine work [kerosene](https://github.com/elixirdrops/kerosene)
-Out of respect to the authors of kerosene I won't be publishing this on https://hex.pm/
-untill and if this becomes the replacement for kerosene.
-
-Until then you will need to install this from github.
+Dissolver was forked of the fine work [kerosene](https://github.com/elixirdrops/kerosene)
 
 ## Installation
 add Dissolver to your mix.exs dependencies:
