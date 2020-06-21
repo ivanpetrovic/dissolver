@@ -181,7 +181,7 @@ defmodule Dissolver do
     %{paginator | total_pages: get_total_pages(total_count, per_page)}
   end
 
-  defp get_total_pages(_, nil), do: 1
+  defp get_total_pages(0, _), do: 0
 
   defp get_total_pages(count, per_page) do
     Float.ceil(count / per_page) |> trunc()
@@ -276,15 +276,25 @@ defmodule Dissolver do
   defp page_constraint(paginator), do: paginator
 
   # TODO: refactor
-  defp process_query(%{page: page, per_page: per_page} = paginator, query) do
-    offset = (page - 1) * per_page
+  defp process_query(%{total_count: 0} = paginator, _query) do
+    {
+      paginator,
+      nil
+    }
+  end
 
+  defp process_query(%{page: page, per_page: per_page} = paginator, query) do
+    offset = ((page - 1 ) * per_page)
     {
       paginator,
       query
       |> limit(^per_page)
       |> offset(^offset)
     }
+  end
+
+  defp return_query_results({paginator, nil}, _repo) do
+    {[], paginator}
   end
 
   defp return_query_results({%{lazy: false} = paginator, query}, repo) do

@@ -66,6 +66,20 @@ defmodule DissolverTest do
       assert items == for(i <- 1..20, do: "Product #{i}")
       clean_config()
     end
+
+    test "paginate/3 should not blow up if zero records are found" do
+      {[], paginator} = Product |> Dissolver.paginate(%{})
+
+      assert paginator.per_page == 20
+      assert paginator.page == 0
+      assert paginator.total_count == 0
+      assert paginator.total_pages == 0
+      assert paginator.theme == Dissolver.HTML.Simple
+      assert paginator.params == %{}
+      clean_config()
+    end
+
+
   end
 
   describe ":per_page" do
