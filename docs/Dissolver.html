@@ -8,7 +8,7 @@
     <meta name="project" content="Dissolver v0.9.3">
     <title>Dissolver — Dissolver v0.9.3</title>
     <link rel="stylesheet" href="dist/elixir-0ab8a6a80ebaaa287431.css" />
-    <script src="dist/sidebar_items-d596a6c3f8.js"></script>
+    <script src="dist/sidebar_items-097a6ce331.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-a225d03098e64fef431a.js"></script>
   </head>
@@ -83,11 +83,11 @@ untill and if this becomes the replacement for kerosene.</p>
 </h2>
 
 <p>add Dissolver to your mix.exs dependencies:</p>
-<pre><code class="nohighlight makeup elixir"><span class="kd">def</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="8691890418-1">do</span><span class="w">
-  </span><span class="p" data-group-id="8691890418-2">[</span><span class="w">
-    </span><span class="p" data-group-id="8691890418-3">{</span><span class="ss">:dissolver</span><span class="p">,</span><span class="w"> </span><span class="ss">github</span><span class="p">:</span><span class="w"> </span><span class="sc">&#39;MorphicPro/dissolver&#39;</span><span class="p" data-group-id="8691890418-3">}</span><span class="w">
-  </span><span class="p" data-group-id="8691890418-2">]</span><span class="w">
-</span><span class="k" data-group-id="8691890418-1">end</span></code></pre>
+<pre><code class="nohighlight makeup elixir"><span class="kd">def</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="6122688594-1">do</span><span class="w">
+  </span><span class="p" data-group-id="6122688594-2">[</span><span class="w">
+    </span><span class="p" data-group-id="6122688594-3">{</span><span class="ss">:dissolver</span><span class="p">,</span><span class="w"> </span><span class="ss">github</span><span class="p">:</span><span class="w"> </span><span class="sc">&#39;MorphicPro/dissolver&#39;</span><span class="p" data-group-id="6122688594-3">}</span><span class="w">
+  </span><span class="p" data-group-id="6122688594-2">]</span><span class="w">
+</span><span class="k" data-group-id="6122688594-1">end</span></code></pre>
 <p>Next provide Dissolver your Repo module via the config.
 Add the following to your config:</p>
 <pre><code class="nohighlight makeup elixir"><span class="w">
@@ -96,7 +96,7 @@ Add the following to your config:</p>
   </span><span class="ss">repo</span><span class="p">:</span><span class="w"> </span><span class="nc">MyApp.Repo</span><span class="w">
   </span><span class="ss">per_page</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
 
-</span><span class="n">import_config</span><span class="w"> </span><span class="s">&quot;</span><span class="si" data-group-id="3178501371-1">#{</span><span class="nc">Mix</span><span class="o">.</span><span class="n">env</span><span class="p" data-group-id="3178501371-2">(</span><span class="p" data-group-id="3178501371-2">)</span><span class="si" data-group-id="3178501371-1">}</span><span class="s">.exs&quot;</span></code></pre>
+</span><span class="n">import_config</span><span class="w"> </span><span class="s">&quot;</span><span class="si" data-group-id="2546898820-1">#{</span><span class="nc">Mix</span><span class="o">.</span><span class="n">env</span><span class="p" data-group-id="2546898820-2">(</span><span class="p" data-group-id="2546898820-2">)</span><span class="si" data-group-id="2546898820-1">}</span><span class="s">.exs&quot;</span></code></pre>
 <p>For more information about the configuration options look at the <a href="#module-configuration">Configurations</a> section</p>
 <p>Now you are ready to start using Dissolver.</p>
 <h2 id="module-usage" class="section-heading">
@@ -105,19 +105,19 @@ Add the following to your config:</p>
 </h2>
 
 <p>Start paginating your queries</p>
-<pre><code class="nohighlight makeup elixir"><span class="kd">def</span><span class="w"> </span><span class="nf">index</span><span class="p" data-group-id="4917413487-1">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">params</span><span class="p" data-group-id="4917413487-1">)</span><span class="w"> </span><span class="k" data-group-id="4917413487-2">do</span><span class="w">
-  </span><span class="p" data-group-id="4917413487-3">{</span><span class="n">products</span><span class="p">,</span><span class="w"> </span><span class="n">paginator</span><span class="p" data-group-id="4917413487-3">}</span><span class="w"> </span><span class="o">=</span><span class="w">
+<pre><code class="nohighlight makeup elixir"><span class="kd">def</span><span class="w"> </span><span class="nf">index</span><span class="p" data-group-id="8336309962-1">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">params</span><span class="p" data-group-id="8336309962-1">)</span><span class="w"> </span><span class="k" data-group-id="8336309962-2">do</span><span class="w">
+  </span><span class="p" data-group-id="8336309962-3">{</span><span class="n">products</span><span class="p">,</span><span class="w"> </span><span class="n">paginator</span><span class="p" data-group-id="8336309962-3">}</span><span class="w"> </span><span class="o">=</span><span class="w">
   </span><span class="nc">Product</span><span class="w">
   </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Product</span><span class="o">.</span><span class="n">with_lowest_price</span><span class="w">
-  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Dissolver</span><span class="o">.</span><span class="n">paginate</span><span class="p" data-group-id="4917413487-4">(</span><span class="n">params</span><span class="p" data-group-id="4917413487-4">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Dissolver</span><span class="o">.</span><span class="n">paginate</span><span class="p" data-group-id="8336309962-4">(</span><span class="n">params</span><span class="p" data-group-id="8336309962-4">)</span><span class="w">
 
-  </span><span class="n">render</span><span class="p" data-group-id="4917413487-5">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;index.html&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">products</span><span class="p">:</span><span class="w"> </span><span class="n">products</span><span class="p">,</span><span class="w"> </span><span class="ss">paginator</span><span class="p">:</span><span class="w"> </span><span class="n">paginator</span><span class="p" data-group-id="4917413487-5">)</span><span class="w">
-</span><span class="k" data-group-id="4917413487-2">end</span></code></pre>
+  </span><span class="n">render</span><span class="p" data-group-id="8336309962-5">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;index.html&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">products</span><span class="p">:</span><span class="w"> </span><span class="n">products</span><span class="p">,</span><span class="w"> </span><span class="ss">paginator</span><span class="p">:</span><span class="w"> </span><span class="n">paginator</span><span class="p" data-group-id="8336309962-5">)</span><span class="w">
+</span><span class="k" data-group-id="8336309962-2">end</span></code></pre>
 <p>Add the view helper to your view</p>
-<pre><code class="nohighlight makeup elixir"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.ProductView</span><span class="w"> </span><span class="k" data-group-id="7392493272-1">do</span><span class="w">
+<pre><code class="nohighlight makeup elixir"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.ProductView</span><span class="w"> </span><span class="k" data-group-id="9973739910-1">do</span><span class="w">
   </span><span class="kn">use</span><span class="w"> </span><span class="nc">MyApp.Web</span><span class="p">,</span><span class="w"> </span><span class="ss">:view</span><span class="w">
   </span><span class="kn">import</span><span class="w"> </span><span class="nc">Dissolver.HTML</span><span class="w">
-</span><span class="k" data-group-id="7392493272-1">end</span></code></pre>
+</span><span class="k" data-group-id="9973739910-1">end</span></code></pre>
 <p>Generate the links using the view helper in your template</p>
 <pre><code class="nohighlight makeup elixir"><span class="o">&lt;</span><span class="p">%</span><span class="o">=</span><span class="w"> </span><span class="n">paginate</span><span class="w"> </span><span class="na">@conn</span><span class="p">,</span><span class="w"> </span><span class="na">@paginator</span><span class="w"> </span><span class="p">%</span><span class="o">&gt;</span></code></pre>
 <p>Importing <a href="Dissolver.HTML.html"><code class="inline">Dissolver.HTML</code></a> provides your template access
@@ -154,14 +154,19 @@ your own, read the following <a href="#module-configuration">Configurations</a><
 </li>
 </ul>
 </li>
-<li><p><code class="inline">:per_page</code> (default: 10) - The global per page setting</p>
+<li><p><code class="inline">:per_page</code> (default: 20) - The global per page setting</p>
+</li>
+<li><p><code class="inline">:max_per_page</code> - The max value for <code class="inline">:per_page</code>, if nil this will default to <code class="inline">:per_page</code></p>
 </li>
 <li><p><code class="inline">:max_page</code> - The limit of pages allow to navigate regardless of total pages found
   This option is ignored if not provided and defaults to total pages found in the query.</p>
 </li>
+<li><p><code class="inline">:max_count</code> - The max limit of total items that will looked up</p>
+</li>
 <li><p><code class="inline">:lazy</code> (default: false) - This option if enabled will result in all <a href="Dissolver.html#paginate/3"><code class="inline">Dissolver.paginate/3</code></a> calls
   return an Ecto.Query rather than call Repo.all. This is useful for when you need to paginate
   on an association via a preload. TODO: provide example.
+  Note you will also want to pass the <code class="inline">:total_count</code> option while using lazy.
 ##</p>
 </li>
 </ul>
@@ -203,7 +208,7 @@ Functions          </h1>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">paginate(query, params, opts \\ [])</h1>
-      <a href="https://github.com/MorphicPro/dissolver/blob/v0.9.3/lib/dissolver.ex#L99" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/MorphicPro/dissolver/blob/v0.9.3/lib/dissolver.ex#L102" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>

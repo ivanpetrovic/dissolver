@@ -8,7 +8,7 @@
     <meta name="project" content="Dissolver v0.9.3">
     <title>Dissolver — Dissolver v0.9.3</title>
     <link rel="stylesheet" href="dist/elixir-0ab8a6a80ebaaa287431.css" />
-    <script src="dist/sidebar_items-d596a6c3f8.js"></script>
+    <script src="dist/sidebar_items-097a6ce331.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-a225d03098e64fef431a.js"></script>
   </head>
@@ -63,22 +63,22 @@ Dissolver      </a>
     <div id="content" class="content-inner">
 
 <h1>Dissolver</h1>
-<h3 id="note-this-is-a-wip-repo-its-not-currently-in-working-order-and-has-many-bugs" class="section-heading">
-  <a href="#note-this-is-a-wip-repo-its-not-currently-in-working-order-and-has-many-bugs" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
-  NOTE: This is a wip repo. It&#39;s not currently in working order and has many bugs.
+<h3 id="note-this-is-a-wip-repo-so-be-warned-there-maybe-be-bugs" class="section-heading">
+  <a href="#note-this-is-a-wip-repo-so-be-warned-there-maybe-be-bugs" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  NOTE: This is a wip repo. So be warned there maybe be bugs.
 </h3>
 
 <p>This project is a fork of <a href="https://github.com/elixirdrops/kerosene">https://github.com/elixirdrops/kerosene</a>.<br />I thought to take it over because it does not look as if its being activly developed
-and I think there is some more work needed before it&#39;s a release canidate.</p>
+and I wanted more features.</p>
 <p>My hope is to refactor the code and tests to better the over all code quality as well as offer some needed features. </p>
-<p>The two first new features will include:</p>
+<p>The two main new features are:</p>
 <ul>
-<li>Lazy query - Instead of pagination calling Repo.all it will return an Ecto query. This is useful for subqueries where you will passying the query to something like a preload. 
+<li>Lazy query - Instead of pagination calling Repo.all it will return an Ecto query. This is useful for subqueries where you will passying the query to something like a preload.
 </li>
 <li>Custom themes - Now you can pass a module as the source of your theme. 
 </li>
 </ul>
-<p>Issues I&#39; like to address:</p>
+<p>Pending Issues I&#39; like to address:</p>
 <ul>
 <li>Many of the functions are public for the sake of testing. I would like refactor all the test so that the modules only exposed required interfaces. 
 </li>
@@ -90,21 +90,18 @@ and I think there is some more work needed before it&#39;s a release canidate.</
 <hr class="thin" />
 <p><img src="https://github.com/MorphicPro/dissolver/workflows/CI/badge.svg" alt="CI" /><a href="https://coveralls.io/github/MorphicPro/dissolver?branch=master"><img src="https://coveralls.io/repos/github/MorphicPro/dissolver/badge.svg?branch=master" alt="Coverage Status" /></a></p>
 <p>Pagination for Ecto and Phoenix.</p>
-<p>Dissolver is the continuation and fork of the fine work <a href="https://github.com/elixirdrops/kerosene">kerosene</a>
-Out of respect to the authors of kerosene I won&#39;t be publishing this on <a href="https://hex.pm">https://hex.pm</a>/
-untill and if this becomes the replacement for kerosene.</p>
-<p>Until then you will need to install this from github.</p>
+<p>Dissolver was forked of the fine work <a href="https://github.com/elixirdrops/kerosene">kerosene</a></p>
 <h2 id="installation" class="section-heading">
   <a href="#installation" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Installation
 </h2>
 
 <p>add Dissolver to your mix.exs dependencies:</p>
-<pre><code class="nohighlight makeup elixir"><span class="kd">def</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="0446326093-1">do</span><span class="w">
-  </span><span class="p" data-group-id="0446326093-2">[</span><span class="w">
-    </span><span class="p" data-group-id="0446326093-3">{</span><span class="ss">:dissolver</span><span class="p">,</span><span class="w"> </span><span class="ss">github</span><span class="p">:</span><span class="w"> </span><span class="sc">&#39;MorphicPro/dissolver&#39;</span><span class="p" data-group-id="0446326093-3">}</span><span class="w">
-  </span><span class="p" data-group-id="0446326093-2">]</span><span class="w">
-</span><span class="k" data-group-id="0446326093-1">end</span></code></pre>
+<pre><code class="nohighlight makeup elixir"><span class="kd">def</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="0438094285-1">do</span><span class="w">
+  </span><span class="p" data-group-id="0438094285-2">[</span><span class="w">
+    </span><span class="p" data-group-id="0438094285-3">{</span><span class="ss">:dissolver</span><span class="p">,</span><span class="w"> </span><span class="ss">github</span><span class="p">:</span><span class="w"> </span><span class="sc">&#39;MorphicPro/dissolver&#39;</span><span class="p" data-group-id="0438094285-3">}</span><span class="w">
+  </span><span class="p" data-group-id="0438094285-2">]</span><span class="w">
+</span><span class="k" data-group-id="0438094285-1">end</span></code></pre>
 <p>Next provide Dissolver your Repo module via the config.
 Add the following to your config:</p>
 <pre><code class="nohighlight makeup elixir"><span class="n">...</span><span class="w">
@@ -121,19 +118,19 @@ Add the following to your config:</p>
 </h2>
 
 <p>Start paginating your queries</p>
-<pre><code class="nohighlight makeup elixir"><span class="kd">def</span><span class="w"> </span><span class="nf">index</span><span class="p" data-group-id="5823118068-1">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">params</span><span class="p" data-group-id="5823118068-1">)</span><span class="w"> </span><span class="k" data-group-id="5823118068-2">do</span><span class="w">
-  </span><span class="p" data-group-id="5823118068-3">{</span><span class="n">products</span><span class="p">,</span><span class="w"> </span><span class="n">paginator</span><span class="p" data-group-id="5823118068-3">}</span><span class="w"> </span><span class="o">=</span><span class="w">
+<pre><code class="nohighlight makeup elixir"><span class="kd">def</span><span class="w"> </span><span class="nf">index</span><span class="p" data-group-id="8948989714-1">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">params</span><span class="p" data-group-id="8948989714-1">)</span><span class="w"> </span><span class="k" data-group-id="8948989714-2">do</span><span class="w">
+  </span><span class="p" data-group-id="8948989714-3">{</span><span class="n">products</span><span class="p">,</span><span class="w"> </span><span class="n">paginator</span><span class="p" data-group-id="8948989714-3">}</span><span class="w"> </span><span class="o">=</span><span class="w">
   </span><span class="nc">Product</span><span class="w">
   </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Product</span><span class="o">.</span><span class="n">with_lowest_price</span><span class="w">
-  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Dissolver</span><span class="o">.</span><span class="n">paginate</span><span class="p" data-group-id="5823118068-4">(</span><span class="n">params</span><span class="p" data-group-id="5823118068-4">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Dissolver</span><span class="o">.</span><span class="n">paginate</span><span class="p" data-group-id="8948989714-4">(</span><span class="n">params</span><span class="p" data-group-id="8948989714-4">)</span><span class="w">
 
-  </span><span class="n">render</span><span class="p" data-group-id="5823118068-5">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;index.html&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">products</span><span class="p">:</span><span class="w"> </span><span class="n">products</span><span class="p">,</span><span class="w"> </span><span class="ss">paginator</span><span class="p">:</span><span class="w"> </span><span class="n">paginator</span><span class="p" data-group-id="5823118068-5">)</span><span class="w">
-</span><span class="k" data-group-id="5823118068-2">end</span></code></pre>
+  </span><span class="n">render</span><span class="p" data-group-id="8948989714-5">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;index.html&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">products</span><span class="p">:</span><span class="w"> </span><span class="n">products</span><span class="p">,</span><span class="w"> </span><span class="ss">paginator</span><span class="p">:</span><span class="w"> </span><span class="n">paginator</span><span class="p" data-group-id="8948989714-5">)</span><span class="w">
+</span><span class="k" data-group-id="8948989714-2">end</span></code></pre>
 <p>Add the view helper to your view</p>
-<pre><code class="nohighlight makeup elixir"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.ProductView</span><span class="w"> </span><span class="k" data-group-id="6132005781-1">do</span><span class="w">
+<pre><code class="nohighlight makeup elixir"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.ProductView</span><span class="w"> </span><span class="k" data-group-id="0864868268-1">do</span><span class="w">
   </span><span class="kn">use</span><span class="w"> </span><span class="nc">MyApp.Web</span><span class="p">,</span><span class="w"> </span><span class="ss">:view</span><span class="w">
   </span><span class="kn">import</span><span class="w"> </span><span class="nc">Dissolver.HTML</span><span class="w">
-</span><span class="k" data-group-id="6132005781-1">end</span></code></pre>
+</span><span class="k" data-group-id="0864868268-1">end</span></code></pre>
 <p>Generate the links using the view helper in your template</p>
 <pre><code class="nohighlight makeup elixir"><span class="o">&lt;</span><span class="p">%</span><span class="o">=</span><span class="w"> </span><span class="n">paginate</span><span class="w"> </span><span class="na">@conn</span><span class="p">,</span><span class="w"> </span><span class="na">@paginator</span><span class="w"> </span><span class="p">%</span><span class="o">&gt;</span></code></pre>
 <p>Importing <a href="Dissolver.HTML.html"><code class="inline">Dissolver.HTML</code></a> provides your template access
@@ -170,34 +167,70 @@ your own, read the following <a href="#module-configuration">Configurations</a><
 </li>
 </ul>
 </li>
-<li><p><code class="inline">:per_page</code> (default: 10) - The global per page setting</p>
+<li><p><code class="inline">:per_page</code> (default: 20) - The global per page setting</p>
 </li>
 <li><p><code class="inline">:max_page</code> - The limit of pages allow to navigate regardless of total pages found
   This option is ignored if not provided and defaults to total pages found in the query.</p>
 </li>
 <li><p><code class="inline">:lazy</code> (default: false) - This option if enabled will result in all <a href="Dissolver.html#paginate/3"><code class="inline">Dissolver.paginate/3</code></a> calls
   return an Ecto.Query rather than call Repo.all. This is useful for when you need to paginate
-  on an association via a preload. TODO: provide example.
-##</p>
+  on an association via a preload. TODO: provide example.</p>
 </li>
 </ul>
-<p>Building apis or SPA&#39;s, no problem Dissolver has support for Json.</p>
-<pre><code class="nohighlight makeup elixir"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.ProductView</span><span class="w"> </span><span class="k" data-group-id="9946833624-1">do</span><span class="w">
+<h2 id="json-api-support" class="section-heading">
+  <a href="#json-api-support" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  JSON API Support.
+</h2>
+
+<pre><code class="nohighlight makeup elixir"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.ProductView</span><span class="w"> </span><span class="k" data-group-id="5149087268-1">do</span><span class="w">
   </span><span class="kn">use</span><span class="w"> </span><span class="nc">MyApp.Web</span><span class="p">,</span><span class="w"> </span><span class="ss">:view</span><span class="w">
   </span><span class="kn">import</span><span class="w"> </span><span class="nc">Dissolver.JSON</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">render</span><span class="p" data-group-id="9946833624-2">(</span><span class="s">&quot;index.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9946833624-3">%{</span><span class="ss">products</span><span class="p">:</span><span class="w"> </span><span class="n">products</span><span class="p">,</span><span class="w"> </span><span class="ss">dissolver</span><span class="p">:</span><span class="w"> </span><span class="n">dissolver</span><span class="p">,</span><span class="w"> </span><span class="ss">conn</span><span class="p">:</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="9946833624-3">}</span><span class="p" data-group-id="9946833624-2">)</span><span class="w"> </span><span class="k" data-group-id="9946833624-4">do</span><span class="w">
-    </span><span class="p" data-group-id="9946833624-5">%{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="n">render_many</span><span class="p" data-group-id="9946833624-6">(</span><span class="n">products</span><span class="p">,</span><span class="w"> </span><span class="nc">MyApp.ProductView</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;product.json&quot;</span><span class="p" data-group-id="9946833624-6">)</span><span class="p">,</span><span class="w">
-      </span><span class="ss">pagination</span><span class="p">:</span><span class="w"> </span><span class="n">paginate</span><span class="p" data-group-id="9946833624-7">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">dissolver</span><span class="p" data-group-id="9946833624-7">)</span><span class="p" data-group-id="9946833624-5">}</span><span class="w">
-  </span><span class="k" data-group-id="9946833624-4">end</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">render</span><span class="p" data-group-id="5149087268-2">(</span><span class="s">&quot;index.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5149087268-3">%{</span><span class="ss">products</span><span class="p">:</span><span class="w"> </span><span class="n">products</span><span class="p">,</span><span class="w"> </span><span class="ss">dissolver</span><span class="p">:</span><span class="w"> </span><span class="n">dissolver</span><span class="p">,</span><span class="w"> </span><span class="ss">conn</span><span class="p">:</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="5149087268-3">}</span><span class="p" data-group-id="5149087268-2">)</span><span class="w"> </span><span class="k" data-group-id="5149087268-4">do</span><span class="w">
+    </span><span class="p" data-group-id="5149087268-5">%{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="n">render_many</span><span class="p" data-group-id="5149087268-6">(</span><span class="n">products</span><span class="p">,</span><span class="w"> </span><span class="nc">MyApp.ProductView</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;product.json&quot;</span><span class="p" data-group-id="5149087268-6">)</span><span class="p">,</span><span class="w">
+      </span><span class="ss">pagination</span><span class="p">:</span><span class="w"> </span><span class="n">paginate</span><span class="p" data-group-id="5149087268-7">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">dissolver</span><span class="p" data-group-id="5149087268-7">)</span><span class="p" data-group-id="5149087268-5">}</span><span class="w">
+  </span><span class="k" data-group-id="5149087268-4">end</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">render</span><span class="p" data-group-id="9946833624-8">(</span><span class="s">&quot;product.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9946833624-9">%{</span><span class="ss">product</span><span class="p">:</span><span class="w"> </span><span class="n">product</span><span class="p" data-group-id="9946833624-9">}</span><span class="p" data-group-id="9946833624-8">)</span><span class="w"> </span><span class="k" data-group-id="9946833624-10">do</span><span class="w">
-    </span><span class="p" data-group-id="9946833624-11">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">product</span><span class="o">.</span><span class="n">id</span><span class="p">,</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">render</span><span class="p" data-group-id="5149087268-8">(</span><span class="s">&quot;product.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5149087268-9">%{</span><span class="ss">product</span><span class="p">:</span><span class="w"> </span><span class="n">product</span><span class="p" data-group-id="5149087268-9">}</span><span class="p" data-group-id="5149087268-8">)</span><span class="w"> </span><span class="k" data-group-id="5149087268-10">do</span><span class="w">
+    </span><span class="p" data-group-id="5149087268-11">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">product</span><span class="o">.</span><span class="n">id</span><span class="p">,</span><span class="w">
       </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="n">product</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="w">
       </span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="n">product</span><span class="o">.</span><span class="n">description</span><span class="p">,</span><span class="w">
-      </span><span class="ss">price</span><span class="p">:</span><span class="w"> </span><span class="n">product</span><span class="o">.</span><span class="n">price</span><span class="p" data-group-id="9946833624-11">}</span><span class="w">
-  </span><span class="k" data-group-id="9946833624-10">end</span><span class="w">
-</span><span class="k" data-group-id="9946833624-1">end</span></code></pre>
+      </span><span class="ss">price</span><span class="p">:</span><span class="w"> </span><span class="n">product</span><span class="o">.</span><span class="n">price</span><span class="p" data-group-id="5149087268-11">}</span><span class="w">
+  </span><span class="k" data-group-id="5149087268-10">end</span><span class="w">
+</span><span class="k" data-group-id="5149087268-1">end</span></code></pre>
+<h2 id="lazy-example" class="section-heading">
+  <a href="#lazy-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Lazy Example.
+</h2>
+
+<p>Say you have a tag that has many posts and you want to paginate the post as they relate to a given tag. </p>
+<p>Heres an example of using the lazy option so that Dissolver.paginate returns a query rather than a result. </p>
+<pre><code class="nohighlight makeup elixir"><span class="kd">def</span><span class="w"> </span><span class="nf">get_post_for_tag!</span><span class="p" data-group-id="0231809749-1">(</span><span class="n">tag_name</span><span class="p">,</span><span class="w"> </span><span class="n">params</span><span class="w"> </span><span class="o">\\</span><span class="w"> </span><span class="p" data-group-id="0231809749-2">%{</span><span class="p" data-group-id="0231809749-2">}</span><span class="p" data-group-id="0231809749-1">)</span><span class="w"> </span><span class="k" data-group-id="0231809749-3">do</span><span class="w">
+    </span><span class="n">total_count</span><span class="w"> </span><span class="o">=</span><span class="w">
+      </span><span class="n">from</span><span class="p" data-group-id="0231809749-4">(</span><span class="n">t</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="s">&quot;tags&quot;</span><span class="p">,</span><span class="w">
+        </span><span class="ss">join</span><span class="p">:</span><span class="w"> </span><span class="n">pt</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="s">&quot;post_tags&quot;</span><span class="p">,</span><span class="w">
+        </span><span class="ss">on</span><span class="p">:</span><span class="w"> </span><span class="n">pt</span><span class="o">.</span><span class="n">tag_id</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">t</span><span class="o">.</span><span class="n">id</span><span class="p">,</span><span class="w">
+        </span><span class="ss">where</span><span class="p">:</span><span class="w"> </span><span class="n">t</span><span class="o">.</span><span class="n">name</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="o">^</span><span class="n">tag_name</span><span class="p">,</span><span class="w">
+        </span><span class="ss">select</span><span class="p">:</span><span class="w"> </span><span class="n">count</span><span class="p" data-group-id="0231809749-5">(</span><span class="p" data-group-id="0231809749-5">)</span><span class="w">
+      </span><span class="p" data-group-id="0231809749-4">)</span><span class="w">
+      </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Repo</span><span class="o">.</span><span class="n">one</span><span class="p" data-group-id="0231809749-6">(</span><span class="p" data-group-id="0231809749-6">)</span><span class="w">
+
+    </span><span class="p" data-group-id="0231809749-7">{</span><span class="n">posts_query</span><span class="p">,</span><span class="w"> </span><span class="n">paginator</span><span class="p" data-group-id="0231809749-7">}</span><span class="w"> </span><span class="o">=</span><span class="w">
+      </span><span class="n">from</span><span class="p" data-group-id="0231809749-8">(</span><span class="n">p</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nc">Post</span><span class="p">,</span><span class="w"> </span><span class="ss">order_by</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="0231809749-9">[</span><span class="ss">desc</span><span class="p">:</span><span class="w"> </span><span class="ss">:inserted_at</span><span class="p" data-group-id="0231809749-9">]</span><span class="p">,</span><span class="w"> </span><span class="ss">preload</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="0231809749-10">[</span><span class="ss">:tags</span><span class="p" data-group-id="0231809749-10">]</span><span class="p" data-group-id="0231809749-8">)</span><span class="w">
+      </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Dissolver</span><span class="o">.</span><span class="n">paginate</span><span class="p" data-group-id="0231809749-11">(</span><span class="n">params</span><span class="p">,</span><span class="w"> </span><span class="ss">total_count</span><span class="p">:</span><span class="w"> </span><span class="n">total_count</span><span class="p">,</span><span class="w"> </span><span class="ss">lazy</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p" data-group-id="0231809749-11">)</span><span class="w">
+
+    </span><span class="n">tag</span><span class="w"> </span><span class="o">=</span><span class="w">
+      </span><span class="n">from</span><span class="p" data-group-id="0231809749-12">(</span><span class="n">t</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nc">Tag</span><span class="p">,</span><span class="w"> </span><span class="ss">where</span><span class="p">:</span><span class="w"> </span><span class="n">t</span><span class="o">.</span><span class="n">name</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="o">^</span><span class="n">tag_name</span><span class="p">,</span><span class="w"> </span><span class="ss">preload</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="0231809749-13">[</span><span class="ss">posts</span><span class="p">:</span><span class="w"> </span><span class="o">^</span><span class="n">posts_query</span><span class="p" data-group-id="0231809749-13">]</span><span class="p" data-group-id="0231809749-12">)</span><span class="w">
+      </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Repo</span><span class="o">.</span><span class="n">one!</span><span class="p" data-group-id="0231809749-14">(</span><span class="p" data-group-id="0231809749-14">)</span><span class="w">
+
+    </span><span class="p" data-group-id="0231809749-15">{</span><span class="n">tag</span><span class="p">,</span><span class="w"> </span><span class="n">paginator</span><span class="p" data-group-id="0231809749-15">}</span><span class="w">
+  </span><span class="k" data-group-id="0231809749-3">end</span></code></pre>
+<p>You will notice that in this case I also have to supply total_count since Dissolver.paginate does not currently have a way to scope total_count of a given tag since they query is applied after Dissolver.paginate was called. So for this use case we just supply the total count up front. </p>
+<p>For my controller it looks just like most.</p>
+<pre><code class="nohighlight makeup elixir"><span class="kd">def</span><span class="w"> </span><span class="nf">show_post</span><span class="p" data-group-id="6805783277-1">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6805783277-2">%{</span><span class="s">&quot;tag&quot;</span><span class="w"> </span><span class="o">=</span><span class="o">&gt;</span><span class="w"> </span><span class="n">tag</span><span class="p" data-group-id="6805783277-2">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">params</span><span class="p" data-group-id="6805783277-1">)</span><span class="w"> </span><span class="k" data-group-id="6805783277-3">do</span><span class="w">
+  </span><span class="p" data-group-id="6805783277-4">{</span><span class="n">tag</span><span class="p">,</span><span class="w"> </span><span class="n">paginator</span><span class="p" data-group-id="6805783277-4">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Blog</span><span class="o">.</span><span class="n">get_post_for_tag!</span><span class="p" data-group-id="6805783277-5">(</span><span class="n">tag</span><span class="p">,</span><span class="w"> </span><span class="n">params</span><span class="p" data-group-id="6805783277-5">)</span><span class="w">
+  </span><span class="n">render</span><span class="p" data-group-id="6805783277-6">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;show_posts.html&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">tag</span><span class="p">:</span><span class="w"> </span><span class="n">tag</span><span class="p">,</span><span class="w"> </span><span class="ss">paginator</span><span class="p">:</span><span class="w"> </span><span class="n">paginator</span><span class="p" data-group-id="6805783277-6">)</span><span class="w">
+</span><span class="k" data-group-id="6805783277-3">end</span></code></pre>
 <p>You can also send in options to paginate helper look at the docs for more details.</p>
 <h2 id="contributing" class="section-heading">
   <a href="#contributing" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
