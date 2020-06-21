@@ -1,0 +1,14 @@
+version: "3"
+services:
+  db:
+    image: "postgres:11"
+    environment:
+      POSTGRES_DB: "dissolver_test_data"
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+    container_name: "dissolver_test_data"
+    ports:
+      - "5432:5432"
+    volumes:
+      - dissolver_test_data:/var/lib/postgresql/data
+volumes:
+  dissolver_test_data:
