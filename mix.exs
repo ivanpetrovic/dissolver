@@ -49,10 +49,10 @@ defmodule Dissolver.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:phoenix_html, "~> 2.14"},
+      {:phoenix_html, "~> 3.0"},
       {:plug, "~> 1.10"},
       {:ecto, "~> 3.4"},
-      {:ecto_sql, "~> 3.4"},
+      {:ecto_sql, "~> 3.6"},
       # Test dependencies
       {:postgrex, "~> 0.15", only: [:test]},
       {:credo, "~> 1.3", only: [:test]},
